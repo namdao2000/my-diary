@@ -1,9 +1,11 @@
 import { ReactElement } from 'react';
 
-export const Diary = (): ReactElement => {
+const Diary = (): ReactElement => {
   return (
     <>
       Dairy Page
     </>
   )
 }
+
+export default Diary
