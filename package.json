@@ -1,0 +1,18 @@
+{
+  "name": "my-diary",
+  "version": "1.0.0",
+  "description": "This website allows you to write anything into an online diary",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/namdao2000/my-diary.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/namdao2000/my-diary/issues"
+  },
+  "homepage": "https://github.com/namdao2000/my-diary#readme"
+}
