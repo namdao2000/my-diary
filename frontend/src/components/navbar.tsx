@@ -29,9 +29,17 @@ export const Navbar = (): ReactElement => {
           <div>
             <Link
               to={routes.login}
-              className="inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white mt-4 lg:mt-0"
+              className="inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white mt-4 lg:mt-0 mr-4"
             >
               Login
+            </Link>
+          </div>
+          <div>
+            <Link
+              to={routes.signup}
+              className="inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white mt-4 lg:mt-0"
+            >
+              Signup
             </Link>
           </div>
         </div>
