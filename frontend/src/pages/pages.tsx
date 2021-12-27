@@ -13,12 +13,13 @@ const Diary = lazy(() => import('./diary'));
 
 export const Pages = (): ReactElement => {
   return (
-    <div className="h-screen w-screen px-20">
-      <Navbar />
+    <div className="h-screen w-screen">
       {/*Main content */}
-      <div className="pt-4">
-        <Router>
-          <ScrollToTop />
+      <Router>
+        <Navbar />
+        <ScrollToTop />
+
+        <div className="pt-4 px-16">
           <Routes>
             <Route
               path={routes.home}
@@ -61,8 +62,8 @@ export const Pages = (): ReactElement => {
               }
             />
           </Routes>
-        </Router>
-      </div>
+        </div>
+      </Router>
     </div>
   );
 };
