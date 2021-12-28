@@ -1,5 +1,9 @@
-import { ReactElement } from 'react';
+import { ReactElement, ReactNode } from 'react';
 
-export const AuthProvider = (): ReactElement => {
-  return <>Auth Provider</>;
+export const AuthProvider = ({
+  children,
+}: {
+  children: ReactNode;
+}): ReactElement => {
+  return <>{children}</>;
 };

@@ -19,7 +19,7 @@ const Login = (): ReactElement => {
               name="email"
             />
           </div>
-          <div className="mb-4">
+          <div className="mb-5">
             <div className="mb-2">
               <label>Password</label>
             </div>
@@ -32,7 +32,7 @@ const Login = (): ReactElement => {
           </div>
         </div>
         <button
-          className="bg-teal-500 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded"
+          className="bg-teal-500 hover:bg-teal-700 text-white font-bold py-3 px-4 rounded w-full"
           type="submit"
         >
           Login
