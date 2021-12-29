@@ -29,7 +29,7 @@ export const useLogin = (): {
   );
 
   return {
-    login,
+    login: verifyUserCredentials,
     loading,
   };
 };
