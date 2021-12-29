@@ -2,14 +2,13 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import { Pages } from './pages/pages';
-import { AuthProvider } from './services/auth/auth-provider';
-import { AuthStorageService } from './services/auth/auth-storage.service';
+import { AuthStateProvider } from './services/auth/auth-state-provider';
 
 ReactDOM.render(
   <React.StrictMode>
-    <AuthProvider authStorageService={new AuthStorageService()}>
+    <AuthStateProvider>
       <Pages />
-    </AuthProvider>
+    </AuthStateProvider>
   </React.StrictMode>,
   document.getElementById('root'),
 );

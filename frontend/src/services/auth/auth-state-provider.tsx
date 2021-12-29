@@ -16,7 +16,7 @@ interface IAuthContext {
   setUserloggedOut: () => void;
 }
 
-export const AuthContext = createContext<IAuthContext>({
+export const AuthStateContext = createContext<IAuthContext>({
   isLoggedIn: false,
   setUserLoggedIn: () => {
     throw new Error('AuthProvider is required');
@@ -26,13 +26,11 @@ export const AuthContext = createContext<IAuthContext>({
   },
 });
 
-export const useAuth = (): IAuthContext => useContext(AuthContext);
+export const useAuthState = (): IAuthContext => useContext(AuthStateContext);
 
-export const AuthProvider = ({
-  authStorageService,
+export const AuthStateProvider = ({
   children,
 }: {
-  authStorageService: AuthStorageService;
   children: ReactNode;
 }): ReactElement => {
   const [isLoggedIn, setLoggedIn] = useState<boolean>(false);
@@ -42,24 +40,24 @@ export const AuthProvider = ({
   const setUserloggedOut = useCallback((): void => {
     setUser(undefined);
     setLoggedIn(false);
-    authStorageService.clear();
-  }, [authStorageService]);
+    AuthStorageService.clear();
+  }, [AuthStorageService]);
 
   const setUserLoggedIn = useCallback(
     (user: User, token: string): void => {
-      authStorageService.setAccessToken(token);
-      authStorageService.setUserInfo(user);
+      AuthStorageService.setAccessToken(token);
+      AuthStorageService.setUserInfo(user);
       setUser(user);
       setLoggedIn(true);
     },
-    [authStorageService],
+    [AuthStorageService],
   );
 
   return (
-    <AuthContext.Provider
+    <AuthStateContext.Provider
       value={{ isLoggedIn, user, setUserLoggedIn, setUserloggedOut }}
     >
       {children}
-    </AuthContext.Provider>
+    </AuthStateContext.Provider>
   );
 };

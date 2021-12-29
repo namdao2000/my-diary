@@ -12,6 +12,7 @@ export const useLogin = (): {
   const [loading, setLoading] = useState(false);
 
   const login = useCallback(async (credentials: Credentials) => {
+    setLoading(true);
     // TODO
   }, []);
 

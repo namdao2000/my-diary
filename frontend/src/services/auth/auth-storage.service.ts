@@ -27,8 +27,8 @@ const clearValue = (key: string): void => {
   localStorage.removeItem(key);
 };
 
-export class AuthStorageService implements IAuthStorageService {
-  public getUserInfo(): User | undefined {
+export const AuthStorageService: IAuthStorageService = {
+  getUserInfo(): User | undefined {
     const token = this.getAccessToken();
     if (!token) {
       return undefined;
@@ -38,22 +38,18 @@ export class AuthStorageService implements IAuthStorageService {
       return value;
     }
     return JSON.parse(value);
-  }
-
-  public setUserInfo(userInfo: User): void {
+  },
+  setUserInfo(userInfo: User): void {
     setValue(UserKey, JSON.stringify(userInfo));
-  }
-
-  public getAccessToken(): string | undefined {
+  },
+  getAccessToken(): string | undefined {
     return getValue(TokenKey);
-  }
-
-  public setAccessToken(accessToken: string): void {
+  },
+  setAccessToken(accessToken: string): void {
     setValue(TokenKey, accessToken);
-  }
-
-  public clear(): void {
+  },
+  clear(): void {
     clearValue(TokenKey);
     clearValue(UserKey);
-  }
-}
+  },
+};
