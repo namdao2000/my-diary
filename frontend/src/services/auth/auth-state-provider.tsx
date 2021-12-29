@@ -13,7 +13,7 @@ interface IAuthContext {
   isLoggedIn: boolean;
   user?: User;
   setUserLoggedIn: (user: User, token: string) => void;
-  setUserloggedOut: () => void;
+  setUserLoggedOut: () => void;
 }
 
 export const AuthStateContext = createContext<IAuthContext>({
@@ -21,7 +21,7 @@ export const AuthStateContext = createContext<IAuthContext>({
   setUserLoggedIn: () => {
     throw new Error('AuthProvider is required');
   },
-  setUserloggedOut: () => {
+  setUserLoggedOut: () => {
     throw new Error('AuthProvider is required');
   },
 });
@@ -55,7 +55,12 @@ export const AuthStateProvider = ({
 
   return (
     <AuthStateContext.Provider
-      value={{ isLoggedIn, user, setUserLoggedIn, setUserloggedOut }}
+      value={{
+        isLoggedIn,
+        user,
+        setUserLoggedIn,
+        setUserLoggedOut: setUserloggedOut,
+      }}
     >
       {children}
     </AuthStateContext.Provider>
