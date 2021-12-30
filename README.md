@@ -17,7 +17,6 @@ The backend of this application is implemented in Expressjs, Typescript and Sqli
 - Stored passwords are hashed using Bcrypt (10 rounds of salting as well)
 
 #### DevOps
-- Support for `.env` file
 
 #### SQLite
 - SQL Triggers for automatic `updated_at` column update.
@@ -30,3 +29,4 @@ The backend of this application is implemented in Expressjs, Typescript and Sqli
 - Epic folder structure to use as a reference for future big boy projects.
 - ESLint and Prettier setup for formatting.
 - Nodemon for automatic reloading
+- Support for `.env` file
