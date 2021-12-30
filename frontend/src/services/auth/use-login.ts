@@ -1,7 +1,6 @@
 import { useCallback, useState } from 'react';
 import { Credentials } from '../../types/credentials';
 import { useAuthState } from './auth-state-provider';
-import { toast } from 'react-hot-toast';
 
 export const useLogin = (): {
   login: ({
@@ -29,7 +28,7 @@ export const useLogin = (): {
   );
 
   return {
-    login: verifyUserCredentials,
+    login,
     loading,
   };
 };
