@@ -36,11 +36,11 @@ export const SQL_STATEMENTS = {
       FROM user
       WHERE username = ?
   `,
-  createDiaryDocument: `
+  createDiaryPage: `
       INSERT INTO diary_page (page_id, username, content)
       VALUES (?, ?, ?);
   `,
-  updateDiaryDocument: `
+  updateDiaryPage: `
       UPDATE diary_page
       SET content = ?
       WHERE page_id = ?;
@@ -49,4 +49,10 @@ export const SQL_STATEMENTS = {
       SELECT username
       FROM diary_page
       WHERE page_id = ?`,
+  deleteDiaryPage: `
+      DELETE
+      FROM diary_page
+      WHERE page_id = ?;
+
+  `,
 };

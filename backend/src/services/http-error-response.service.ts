@@ -59,7 +59,7 @@ export const getHttpErrorResponse = (errorCode: ErrorCode): IHttpErrorResponse =
     }
     case ErrorCode.DIARY_PAGE_NON_EXISTENT: {
       response.status = 404;
-      response.message = 'You are unauthorized to perform this action.';
+      response.message = 'The resource you requested was not found.';
       break;
     }
     case ErrorCode.UNKNOWN_ERROR: {

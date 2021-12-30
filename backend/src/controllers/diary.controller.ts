@@ -7,8 +7,6 @@ export interface DiaryArgs {
 
 export interface CreateDiaryArgs extends DiaryArgs {}
 
-export interface UpdateDiaryArgs extends DiaryArgs {}
-
 export const DiaryController = {
   get: async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     res.status(200).json({
@@ -36,10 +34,9 @@ export const DiaryController = {
     const { username } = res.locals;
     const { content } = req.body;
     const { page_id } = req.params;
-
     try {
       await DiaryService.updateDiaryPage({ username, content, page_id });
-      res.status(201).json({
+      res.status(200).json({
         message: 'Successfully updated the diary page',
       });
       next();
@@ -48,6 +45,16 @@ export const DiaryController = {
     }
   },
   delete: async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    // TODO:
+    const { username } = res.locals;
+    const { page_id } = req.params;
+    try {
+      await DiaryService.deleteDiaryPage({ username, page_id });
+      res.status(200).json({
+        message: 'Successfully deleted the diary page',
+      });
+      next();
+    } catch (e) {
+      next(e);
+    }
   },
 };

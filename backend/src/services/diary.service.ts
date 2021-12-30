@@ -16,6 +16,11 @@ export interface UpdateDiaryPageArgs {
   page_id: string;
 }
 
+export interface DeleteDiaryPageArgs {
+  username: string;
+  page_id: string;
+}
+
 export const DiaryService = {
   createDiaryPage: async (args: CreateDiaryPageArgs): Promise<void> => {
     await DiaryDataLayer.createDiaryPage(args);
@@ -26,5 +31,12 @@ export const DiaryService = {
       throw new HttpError(getHttpErrorResponse(ErrorCode.DIARY_PAGE_NON_EXISTENT));
     }
     await DiaryDataLayer.updateDiaryPage(args);
+  },
+  deleteDiaryPage: async (args: DeleteDiaryPageArgs): Promise<void> => {
+    const diaryUser = await DiaryDataLayer.getDiaryPageUsername(args.page_id);
+    if (!diaryUser || diaryUser !== args.username) {
+      throw new HttpError(getHttpErrorResponse(ErrorCode.DIARY_PAGE_NON_EXISTENT));
+    }
+    await DiaryDataLayer.deleteDiaryPage(args.page_id);
   },
 };
