@@ -23,6 +23,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // Security
 app.use(helmet());
+app.use(logging);
 app.use(resJsonInterceptor);
 
 // Adding routes.
@@ -30,7 +31,6 @@ app.use(BASE_URL, AuthRouter);
 app.use(BASE_URL, DiaryRouter);
 
 // Logging requests. This comes here because we need to get res.StatusCode
-app.use(logging);
 app.use(errorHandler);
 // Initialise the DB
 initialiseDatabase();

@@ -6,7 +6,8 @@ export const resJsonInterceptor = (req: Request, res: Response, next: NextFuncti
   res.json = (data) => {
     // TODO: here
     logger.info({
-      http_response: data,
+      message: 'Http Response',
+      data,
     });
     res.json = oldResJson;
     return res.json(data);

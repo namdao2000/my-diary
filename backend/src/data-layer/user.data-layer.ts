@@ -22,7 +22,7 @@ export const UserDataLayer = {
   }: CreateNewUserArgs): Promise<void> => {
     await (
       await DB
-    ).all(SQL_STATEMENTS.createNewUser, [username, password, first_name, last_name, ip]);
+    ).all(SQL_STATEMENTS.createUser, [username, password, first_name, last_name, ip]);
   },
   getUserPassword: async (username: string): Promise<string | undefined> => {
     const res = await (await DB).get(SQL_STATEMENTS.getUserPassword, [username]);

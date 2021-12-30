@@ -15,5 +15,5 @@ export const DB = open({
 });
 
 export const initialiseDatabase = async () => {
-  (await DB).run(SQL_STATEMENTS.initialiseDatabase);
+  await (await DB).exec(SQL_STATEMENTS.initialiseDatabase);
 };

@@ -11,9 +11,9 @@ export const SQL_STATEMENTS = {
           updated_at DATETIME
       );
 
-      CREATE TABLE IF NOT EXISTS diary_document
+      CREATE TABLE IF NOT EXISTS diary_page
       (
-          document_id UUID PRIMARY KEY,
+          page_id UUID PRIMARY KEY,
           username    VARCHAR(255) NOT NULL,
           content     TEXT,
           created_at  DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
@@ -21,19 +21,23 @@ export const SQL_STATEMENTS = {
           FOREIGN KEY (username) REFERENCES user (username)
       );
   `,
-  createNewUser: `
+  createUser: `
       INSERT INTO user (username, password, first_name, last_name, ip_address)
       VALUES (?, ?, ?, ?, ?)
   `,
 
   getUserPassword: `
       SELECT password
-      from user
-      where username = ?
+      FROM user
+      WHERE username = ?
   `,
   getUser: `
       SELECT *
-      from user
-      where username = ?
+      FROM user
+      WHERE username = ?
+  `,
+  createDiaryDocument: `
+      INSERT INTO diary_page (page_id, username, content)
+      VALUES (?, ?, ?);
   `,
 };

@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
+import { DiaryService } from '../services/diary.service';
 
 export interface createDiaryArgs {
   content: string;
@@ -14,7 +15,19 @@ export const DiaryController = {
     req: Request<{}, {}, createDiaryArgs>,
     res: Response,
     next: NextFunction,
-  ): Promise<void> => {},
+  ): Promise<void> => {
+    const { username } = res.locals;
+    const { content } = req.body;
+    try {
+      await DiaryService.createDiaryPage({ username, content });
+      res.status(201).json({
+        message: 'Successfully created a new diary page!',
+      });
+      next();
+    } catch (e) {
+      next(e);
+    }
+  },
   update: async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     // TODO:
   },

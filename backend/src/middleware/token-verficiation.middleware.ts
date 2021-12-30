@@ -14,18 +14,14 @@ export const authTokenGuard = async (
   if (!authHeader?.startsWith('Bearer')) {
     next(getHttpErrorResponse(ErrorCode.MISSING_AUTH_TOKEN));
   } else {
-    try {
-      const authHeaderArray = authHeader.split(' ');
-      const token = authHeaderArray[1];
-      const decodedToken = await AuthService.verifyAndDecodeJWT(token);
-      if (!decodedToken) {
-        next(getHttpErrorResponse(ErrorCode.INVALID_TOKEN));
-      } else {
-        res.locals.username = (decodedToken as { username: string }).username;
-        next();
-      }
-    } catch (e) {
+    const authHeaderArray = authHeader.split(' ');
+    const token = authHeaderArray?.[1];
+    const decodedToken = await AuthService.verifyAndDecodeJWT(token);
+    if (!decodedToken) {
       next(getHttpErrorResponse(ErrorCode.INVALID_TOKEN));
+    } else {
+      res.locals.username = decodedToken;
+      next();
     }
   }
 };
