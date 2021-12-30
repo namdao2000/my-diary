@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { AuthService, Credentials } from '../services/auth.service';
-import { v4 as uuidv4 } from 'uuid';
+import { ErrorCode, getHttpErrorResponse } from '../services/http-error-response.service';
 
 export interface SignupReqArgs {
   username: string;
@@ -19,17 +19,15 @@ export const AuthController = {
   ): Promise<void> => {
     try {
       const response = await AuthService.verifyUserCredentials(req.body);
-      if (response) {
+      if (!response) {
+        next(getHttpErrorResponse(ErrorCode.INVALID_CREDENTIALS));
+      } else {
+        const token = await AuthService.generateJWT(req.body.username);
         res.status(200).json({
           message: 'Login Success!',
-          data: {
-            token: uuidv4(),
-          },
+          token,
         });
-      } else {
-        res.status(401).json({
-          message: 'Incorrect username or password',
-        });
+        next();
       }
     } catch (e) {
       next(e);
@@ -41,15 +39,19 @@ export const AuthController = {
     next: NextFunction,
   ): Promise<void> => {
     try {
-      const response = await AuthService.createNewUser({ ...req.body, ip: req.ip });
-      if (response) {
+      const response = await AuthService.createNewUser({
+        ...req.body,
+        ip: req.ip,
+      });
+      if (!response) {
+        next(getHttpErrorResponse(ErrorCode.USERNAME_TAKEN));
+      } else {
+        const token = await AuthService.generateJWT(req.body.username);
         res.status(201).json({
           message: `Successfully registered a new user ${req.body.username}.`,
+          token,
         });
-      } else {
-        res.status(409).json({
-          message: `The username ${req.body.username} is already taken.`,
-        });
+        next();
       }
     } catch (e) {
       next(e);

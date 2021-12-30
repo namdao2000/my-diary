@@ -1,6 +1,8 @@
 import { SignupReqArgs } from '../controllers/auth.controller';
 import { UserDataLayer } from '../data-layer/user.data-layer';
 import { getBcryptedPassword, verifyPassword } from '../utils/bcrypt';
+import jwt, { JwtPayload } from 'jsonwebtoken';
+import { JWT_SECRET } from '../utils/constants';
 
 export interface Credentials {
   username: string;
@@ -37,5 +39,11 @@ export const AuthService = {
       ip,
     });
     return true;
+  },
+  generateJWT: async (username: string): Promise<string> => {
+    return jwt.sign({ username }, JWT_SECRET(), { expiresIn: '30 days' });
+  },
+  verifyAndDecodeJWT: async (token: string): Promise<string | JwtPayload> => {
+    return jwt.verify(token, JWT_SECRET());
   },
 };

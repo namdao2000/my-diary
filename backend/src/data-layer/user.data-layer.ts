@@ -2,7 +2,7 @@ import { DB } from '../helpers/database.helper';
 import { SQL_STATEMENTS } from './sql-statements';
 import { CreateNewUserArgs } from '../services/auth.service';
 
-export interface User {
+export interface UserSchema {
   username: string;
   password: string;
   first_name: string;
@@ -28,7 +28,7 @@ export const UserDataLayer = {
     const res = await (await DB).get(SQL_STATEMENTS.getUserPassword, [username]);
     return res?.password;
   },
-  getUser: async (username: string): Promise<User | undefined> => {
+  getUser: async (username: string): Promise<UserSchema | undefined> => {
     return await (await DB).get(SQL_STATEMENTS.getUser, [username]);
   },
 };

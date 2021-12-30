@@ -1,6 +1,6 @@
 import './utils/loadenv';
 import app from './server';
-import logger from './utils/logger';
+import { logger } from './utils/logger';
 
 const PORT = process.env.PORT || 8080;
 

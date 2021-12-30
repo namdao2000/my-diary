@@ -13,6 +13,7 @@ import { initialiseDatabase } from './helpers/database.helper';
 import { AuthRouter } from './routes/auth.routes';
 import { errorHandler } from './middleware/error-handler.middleware';
 import { resJsonInterceptor } from './middleware/res-json-interceptor.middleware';
+import { DiaryRouter } from './routes/diary.routes';
 
 const app = express();
 
@@ -26,6 +27,7 @@ app.use(resJsonInterceptor);
 
 // Adding routes.
 app.use(BASE_URL, AuthRouter);
+app.use(BASE_URL, DiaryRouter);
 
 // Logging requests. This comes here because we need to get res.StatusCode
 app.use(logging);

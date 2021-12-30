@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import logger from '../utils/logger';
+import { logger } from '../utils/logger';
 
 export const logging = (req: Request, res: Response): void => {
   logger.info({

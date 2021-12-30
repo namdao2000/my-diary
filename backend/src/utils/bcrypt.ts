@@ -1,10 +1,7 @@
 import bcrypt from 'bcrypt';
 
-export const getBcryptedPassword = async (
-  password: string,
-): Promise<string> => {
-  const saltRounds = 10;
-  return bcrypt.hash(password, saltRounds);
+export const getBcryptedPassword = async (password: string): Promise<string> => {
+  return bcrypt.hash(password, 10);
 };
 
 export const verifyPassword = async ({
