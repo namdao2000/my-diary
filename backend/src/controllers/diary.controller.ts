@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import { DiaryService } from '../services/diary.service';
 
 export interface DiaryArgs {
+  title: string;
   content: string;
 }
 
@@ -9,9 +10,31 @@ export interface CreateDiaryArgs extends DiaryArgs {}
 
 export const DiaryController = {
   get: async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    res.status(200).json({
-      content: 'I am so sad lmao, please help xD',
-    });
+    try {
+      const { username } = res.locals;
+      const { page_id } = req.params;
+
+      const result = await DiaryService.getOneDiaryPage({ username, page_id });
+      res.status(200).json(result);
+      next();
+    } catch (e) {
+      next(e);
+    }
+  },
+  getAll: async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const { username } = res.locals;
+      const { offset } = req.query;
+
+      const result = await DiaryService.getDiaryPages({
+        username,
+        offset: parseInt(offset as string),
+      });
+      res.status(200).json(result);
+      next();
+    } catch (e) {
+      next(e);
+    }
   },
   create: async (
     req: Request<{}, {}, CreateDiaryArgs>,
@@ -19,9 +42,9 @@ export const DiaryController = {
     next: NextFunction,
   ): Promise<void> => {
     const { username } = res.locals;
-    const { content } = req.body;
+    const { content, title } = req.body;
     try {
-      await DiaryService.createDiaryPage({ username, content });
+      await DiaryService.createDiaryPage({ username, title, content });
       res.status(201).json({
         message: 'Successfully created a new diary page!',
       });
@@ -32,10 +55,10 @@ export const DiaryController = {
   },
   update: async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const { username } = res.locals;
-    const { content } = req.body;
+    const { content, title } = req.body;
     const { page_id } = req.params;
     try {
-      await DiaryService.updateDiaryPage({ username, content, page_id });
+      await DiaryService.updateDiaryPage({ username, title, content, page_id });
       res.status(200).json({
         message: 'Successfully updated the diary page',
       });

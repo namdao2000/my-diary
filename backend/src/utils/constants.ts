@@ -5,7 +5,4 @@ export const JWT_SECRET = (): string => {
   if (!secret) throw new Error('Missing JWT secret');
   return secret;
 };
-export const NODE_ENV = {
-  PRODUCTION: 'production',
-  DEVELOPMENT: 'development',
-};
+export const NODE_ENV = process.env.NODE_ENV || 'DEVELOPMENT';
