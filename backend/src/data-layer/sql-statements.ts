@@ -25,7 +25,6 @@ export const SQL_STATEMENTS = {
       INSERT INTO user (username, password, first_name, last_name, ip_address)
       VALUES (?, ?, ?, ?, ?)
   `,
-
   getUserPassword: `
       SELECT password
       FROM user
@@ -48,11 +47,11 @@ export const SQL_STATEMENTS = {
   getDiaryPageUsername: `
       SELECT username
       FROM diary_page
-      WHERE page_id = ?`,
+      WHERE page_id = ?
+  `,
   deleteDiaryPage: `
       DELETE
       FROM diary_page
       WHERE page_id = ?;
-
   `,
 };
