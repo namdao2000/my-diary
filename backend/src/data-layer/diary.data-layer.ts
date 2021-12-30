@@ -1,8 +1,4 @@
-import {
-  CreateDiaryPageArgs,
-  DeleteDiaryPageArgs,
-  UpdateDiaryPageArgs,
-} from '../services/diary.service';
+import { CreateDiaryPageArgs, UpdateDiaryPageArgs } from '../services/diary.service';
 import { DB } from '../helpers/database.helper';
 import { SQL_STATEMENTS } from './sql-statements';
 import { v4 } from 'uuid';
