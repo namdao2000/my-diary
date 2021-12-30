@@ -9,8 +9,7 @@ import express from 'express';
 import helmet from 'helmet';
 import { logging } from './middleware/logging.middleware';
 import { BASE_URL } from './utils/constants';
-import { DB } from './helpers/db-wrapper.helper';
-import { SQL_STATEMENTS } from './data-layer/sql-statements';
+import { initialiseDatabase } from './helpers/database.helper';
 import { AuthRouter } from './routes/auth.routes';
 
 const app = express();
@@ -30,6 +29,7 @@ app.use(BASE_URL, AuthRouter);
 // Logging requests. This comes here because we need to get res.StatusCode
 app.use(logging);
 
-DB.run(SQL_STATEMENTS.initialiseDatabase);
+// Initialise the DB
+initialiseDatabase();
 
 export default app;

@@ -1,5 +1,5 @@
 import { SignupReqArgs } from '../controllers/auth.controller';
-import { DB } from '../helpers/db-wrapper.helper';
+import { DB } from '../helpers/database.helper';
 import { SQL_STATEMENTS } from './sql-statements';
 import { getBcryptedPassword } from '../utils/get-bcrypted-password';
 
@@ -10,9 +10,8 @@ export const AuthDataLayer = {
     first_name,
     last_name,
   }: SignupReqArgs): Promise<string> => {
-    const bcryptedPassword = getBcryptedPassword(password);
-    throw new Error('please catch me lmao');
-    const res = DB.run(SQL_STATEMENTS.createNewUser, [
+    const bcryptedPassword = await getBcryptedPassword(password);
+    (await DB).all(SQL_STATEMENTS.createNewUser, [
       username,
       bcryptedPassword,
       first_name,

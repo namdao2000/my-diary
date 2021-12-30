@@ -1,5 +1,4 @@
 import './utils/loadenv';
-import './helpers/db-wrapper.helper';
 import app from './server';
 import logger from './utils/logger';
 

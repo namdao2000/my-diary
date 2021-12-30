@@ -1,6 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
 import { AuthService } from '../services/auth.service';
-import { customTryCatch } from '../utils/custom-try-catch';
 
 //TODO: Look at how to get IP address
 export type SignupReqArgs = {
@@ -23,11 +22,9 @@ export const AuthController = {
     res: Response,
     next: NextFunction,
   ): Promise<void> => {
-    customTryCatch(async () => {
-      await AuthService.createNewUser(req.body);
-      res.status(201).json({
-        message: `Successfully registered a new user ${req.body.username}`,
-      });
-    }, next);
+    await AuthService.createNewUser(req.body);
+    res.status(201).json({
+      message: `Successfully registered a new user ${req.body.username}`,
+    });
   },
 };
