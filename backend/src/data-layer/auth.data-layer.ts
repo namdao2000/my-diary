@@ -1,7 +1,7 @@
-import { SignupReqArgs } from '../controllers/auth.controller';
 import { DB } from '../helpers/database.helper';
 import { SQL_STATEMENTS } from './sql-statements';
 import { getBcryptedPassword } from '../utils/get-bcrypted-password';
+import { CreateNewUserArgs } from '../services/auth.service';
 
 export const AuthDataLayer = {
   createNewUser: async ({
@@ -9,14 +9,17 @@ export const AuthDataLayer = {
     password,
     first_name,
     last_name,
-  }: SignupReqArgs): Promise<string> => {
+    ip,
+  }: CreateNewUserArgs): Promise<string> => {
     const bcryptedPassword = await getBcryptedPassword(password);
-    (await DB).all(SQL_STATEMENTS.createNewUser, [
+    await (
+      await DB
+    ).all(SQL_STATEMENTS.createNewUser, [
       username,
       bcryptedPassword,
       first_name,
       last_name,
-      '0.0.0.0',
+      ip,
     ]);
     return username;
   },

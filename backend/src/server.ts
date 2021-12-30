@@ -11,6 +11,8 @@ import { logging } from './middleware/logging.middleware';
 import { BASE_URL } from './utils/constants';
 import { initialiseDatabase } from './helpers/database.helper';
 import { AuthRouter } from './routes/auth.routes';
+import { errorHandler } from './middleware/error-handler.middleware';
+import { resJsonInterceptor } from './middleware/custom-res-json.middleware';
 
 const app = express();
 
@@ -20,15 +22,14 @@ app.use(express.urlencoded({ extended: true }));
 
 // Security
 app.use(helmet());
-
-// TODO: save the response in the res object.
+app.use(resJsonInterceptor);
 
 // Adding routes.
 app.use(BASE_URL, AuthRouter);
 
 // Logging requests. This comes here because we need to get res.StatusCode
 app.use(logging);
-
+app.use(errorHandler);
 // Initialise the DB
 initialiseDatabase();
 
