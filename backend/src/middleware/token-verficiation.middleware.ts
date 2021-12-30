@@ -21,7 +21,7 @@ export const authTokenGuard = async (
       if (!decodedToken) {
         next(getHttpErrorResponse(ErrorCode.INVALID_TOKEN));
       } else {
-        res.locals.username = decodedToken;
+        res.locals.username = (decodedToken as { username: string }).username;
         next();
       }
     } catch (e) {
