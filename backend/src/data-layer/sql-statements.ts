@@ -13,11 +13,11 @@ export const SQL_STATEMENTS = {
 
       CREATE TABLE IF NOT EXISTS diary_page
       (
-          page_id UUID PRIMARY KEY,
-          username    VARCHAR(255) NOT NULL,
-          content     TEXT,
-          created_at  DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
-          updated_at  DATETIME,
+          page_id    UUID PRIMARY KEY,
+          username   VARCHAR(255) NOT NULL,
+          content    TEXT,
+          created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
+          updated_at DATETIME,
           FOREIGN KEY (username) REFERENCES user (username)
       );
   `,
@@ -40,4 +40,13 @@ export const SQL_STATEMENTS = {
       INSERT INTO diary_page (page_id, username, content)
       VALUES (?, ?, ?);
   `,
+  updateDiaryDocument: `
+      UPDATE diary_page
+      SET content = ?
+      WHERE page_id = ?;
+  `,
+  getDiaryPageUsername: `
+      SELECT username
+      FROM diary_page
+      WHERE page_id = ?`,
 };

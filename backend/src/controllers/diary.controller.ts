@@ -1,9 +1,13 @@
 import { NextFunction, Request, Response } from 'express';
 import { DiaryService } from '../services/diary.service';
 
-export interface createDiaryArgs {
+export interface DiaryArgs {
   content: string;
 }
+
+export interface CreateDiaryArgs extends DiaryArgs {}
+
+export interface UpdateDiaryArgs extends DiaryArgs {}
 
 export const DiaryController = {
   get: async (req: Request, res: Response, next: NextFunction): Promise<void> => {
@@ -12,7 +16,7 @@ export const DiaryController = {
     });
   },
   create: async (
-    req: Request<{}, {}, createDiaryArgs>,
+    req: Request<{}, {}, CreateDiaryArgs>,
     res: Response,
     next: NextFunction,
   ): Promise<void> => {
@@ -29,7 +33,19 @@ export const DiaryController = {
     }
   },
   update: async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    // TODO:
+    const { username } = res.locals;
+    const { content } = req.body;
+    const { page_id } = req.params;
+
+    try {
+      await DiaryService.updateDiaryPage({ username, content, page_id });
+      res.status(201).json({
+        message: 'Successfully updated the diary page',
+      });
+      next();
+    } catch (e) {
+      next(e);
+    }
   },
   delete: async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     // TODO:

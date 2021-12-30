@@ -3,17 +3,29 @@ export enum ErrorCode {
   INVALID_TOKEN = 'INVALID_TOKEN',
   INVALID_CREDENTIALS = 'INVALID_CREDENTIALS',
   USERNAME_TAKEN = 'USERNAME_TAKEN',
+  UNAUTHORIZED_ACTION = 'UNAUTHORIZED_ACTION',
+  DIARY_PAGE_NON_EXISTENT = 'DIARY_PAGE_NON_EXISTENT',
   UNKNOWN_ERROR = 'UNKNOWN_ERROR',
 }
 
-export interface HttpErrorResponse {
+export interface IHttpErrorResponse {
   status: number;
   message: string;
   error_code: ErrorCode;
 }
 
-export const getHttpErrorResponse = (errorCode: ErrorCode): HttpErrorResponse => {
-  let response: HttpErrorResponse = {
+export class HttpError extends Error {
+  private status: number;
+  private error_code: ErrorCode;
+  constructor(args: IHttpErrorResponse) {
+    super(args.message);
+    this.status = args.status;
+    this.error_code = args.error_code;
+  }
+}
+
+export const getHttpErrorResponse = (errorCode: ErrorCode): IHttpErrorResponse => {
+  let response: IHttpErrorResponse = {
     status: 400,
     message: errorCode,
     error_code: errorCode,
@@ -38,6 +50,16 @@ export const getHttpErrorResponse = (errorCode: ErrorCode): HttpErrorResponse =>
       response.status = 409;
       response.message =
         'New account cannot be created because the username provided has been taken.';
+      break;
+    }
+    case ErrorCode.UNAUTHORIZED_ACTION: {
+      response.status = 403;
+      response.message = 'You are unauthorized to perform this action.';
+      break;
+    }
+    case ErrorCode.DIARY_PAGE_NON_EXISTENT: {
+      response.status = 404;
+      response.message = 'You are unauthorized to perform this action.';
       break;
     }
     case ErrorCode.UNKNOWN_ERROR: {
