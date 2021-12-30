@@ -3,6 +3,11 @@ import { UserDataLayer } from '../data-layer/user.data-layer';
 import { getBcryptedPassword, verifyPassword } from '../utils/bcrypt';
 import jwt from 'jsonwebtoken';
 import { JWT_SECRET } from '../utils/constants';
+import {
+  ErrorCode,
+  getHttpErrorResponse,
+  HttpError,
+} from './http-error-response.service';
 
 export interface Credentials {
   username: string;
@@ -28,8 +33,10 @@ export const AuthService = {
     first_name,
     last_name,
     ip,
-  }: CreateNewUserArgs): Promise<boolean> => {
-    if (await UserDataLayer.getUser(username)) return false;
+  }: CreateNewUserArgs): Promise<void> => {
+    if (await UserDataLayer.getUser(username)) {
+      throw new HttpError(getHttpErrorResponse(ErrorCode.USERNAME_TAKEN));
+    }
     const bcryptedPassword = await getBcryptedPassword(password);
     await UserDataLayer.createNewUser({
       username,
@@ -38,7 +45,6 @@ export const AuthService = {
       last_name,
       ip,
     });
-    return true;
   },
   generateJWT: async (username: string): Promise<string> => {
     return jwt.sign({ username }, JWT_SECRET(), { expiresIn: '30 days' });

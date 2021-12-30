@@ -15,7 +15,11 @@ export const errorHandler = (
     });
     res.status(500).json(getHttpErrorResponse(ErrorCode.UNKNOWN_ERROR));
   } else {
-    res.status(error.status).json(error);
+    res.status(error.status).json({
+      status: error.status,
+      message: error.message,
+      error_code: error.error_code,
+    });
   }
   next();
 };

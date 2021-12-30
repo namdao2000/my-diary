@@ -39,20 +39,16 @@ export const AuthController = {
     next: NextFunction,
   ): Promise<void> => {
     try {
-      const response = await AuthService.createNewUser({
+      await AuthService.createNewUser({
         ...req.body,
         ip: req.ip,
       });
-      if (!response) {
-        next(getHttpErrorResponse(ErrorCode.USERNAME_TAKEN));
-      } else {
-        const token = await AuthService.generateJWT(req.body.username);
-        res.status(201).json({
-          message: `Successfully registered a new user ${req.body.username}.`,
-          token,
-        });
-        next();
-      }
+      const token = await AuthService.generateJWT(req.body.username);
+      res.status(201).json({
+        message: `Successfully registered a new user ${req.body.username}.`,
+        token,
+      });
+      next();
     } catch (e) {
       next(e);
     }
