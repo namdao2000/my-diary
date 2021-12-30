@@ -1,13 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { DiaryService } from '../services/diary.service';
 
-export interface DiaryArgs {
-  title: string;
-  content: string;
-}
-
-export interface CreateDiaryArgs extends DiaryArgs {}
-
 export const DiaryController = {
   get: async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
@@ -36,11 +29,7 @@ export const DiaryController = {
       next(e);
     }
   },
-  create: async (
-    req: Request<{}, {}, CreateDiaryArgs>,
-    res: Response,
-    next: NextFunction,
-  ): Promise<void> => {
+  create: async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const { username } = res.locals;
     const { content, title } = req.body;
     try {
