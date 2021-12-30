@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
-import { AuthService } from '../services/auth.service';
-
+import { AuthService, Credentials } from '../services/auth.service';
+import { v4 as uuidv4 } from 'uuid';
 export interface SignupReqArgs {
   username: string;
   password: string;
@@ -8,13 +8,31 @@ export interface SignupReqArgs {
   last_name: string;
 }
 
+export interface LoginReqArgs extends Credentials {}
+
 export const AuthController = {
   login: async (
-    req: Request,
+    req: Request<{}, {}, LoginReqArgs>,
     res: Response,
     next: NextFunction,
   ): Promise<void> => {
-    // TODO:
+    try {
+      const response = await AuthService.verifyUserCredentials(req.body);
+      if (!response) {
+        res.status(401).json({
+          message: 'Incorrect username or password',
+        });
+      } else {
+        res.status(200).json({
+          message: 'Login Success!',
+          data: {
+            token: uuidv4(),
+          },
+        });
+      }
+    } catch (e) {
+      next(e);
+    }
   },
   signup: async (
     req: Request<{}, {}, SignupReqArgs>,

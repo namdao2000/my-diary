@@ -30,4 +30,8 @@ CREATE TABLE IF NOT EXISTS diary_document (
   INSERT INTO user (username, password, first_name, last_name, ip_address)
   VALUES (?, ?, ?, ?, ?)
   `,
+
+  getUserPassword: `
+  SELECT password from user where username = ? 
+  `,
 };

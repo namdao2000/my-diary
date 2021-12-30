@@ -11,6 +11,6 @@ export const errorHandler = (
     message: 'Error has occurred, but was caught',
     error,
   });
-  res.status(400).send();
+  res.status(500).send();
   next();
 };
