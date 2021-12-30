@@ -12,7 +12,7 @@ import { BASE_URL } from './utils/constants';
 import { initialiseDatabase } from './helpers/database.helper';
 import { AuthRouter } from './routes/auth.routes';
 import { errorHandler } from './middleware/error-handler.middleware';
-import { resJsonInterceptor } from './middleware/custom-res-json.middleware';
+import { resJsonInterceptor } from './middleware/res-json-interceptor.middleware';
 
 const app = express();
 

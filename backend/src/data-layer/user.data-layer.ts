@@ -2,6 +2,16 @@ import { DB } from '../helpers/database.helper';
 import { SQL_STATEMENTS } from './sql-statements';
 import { CreateNewUserArgs } from '../services/auth.service';
 
+export interface User {
+  username: string;
+  password: string;
+  first_name: string;
+  last_name: string;
+  ip_address: string;
+  created_at: string;
+  updated_at: string;
+}
+
 export const UserDataLayer = {
   createNewUser: async ({
     username,
@@ -9,22 +19,16 @@ export const UserDataLayer = {
     first_name,
     last_name,
     ip,
-  }: CreateNewUserArgs): Promise<string> => {
+  }: CreateNewUserArgs): Promise<void> => {
     await (
       await DB
-    ).all(SQL_STATEMENTS.createNewUser, [
-      username,
-      password,
-      first_name,
-      last_name,
-      ip,
-    ]);
-    return username;
+    ).all(SQL_STATEMENTS.createNewUser, [username, password, first_name, last_name, ip]);
   },
   getUserPassword: async (username: string): Promise<string | undefined> => {
-    const res = await (
-      await DB
-    ).get(SQL_STATEMENTS.getUserPassword, [username]);
+    const res = await (await DB).get(SQL_STATEMENTS.getUserPassword, [username]);
     return res?.password;
+  },
+  getUser: async (username: string): Promise<User | undefined> => {
+    return await (await DB).get(SQL_STATEMENTS.getUser, [username]);
   },
 };

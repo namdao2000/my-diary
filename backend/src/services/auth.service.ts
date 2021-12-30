@@ -26,7 +26,8 @@ export const AuthService = {
     first_name,
     last_name,
     ip,
-  }: CreateNewUserArgs): Promise<void> => {
+  }: CreateNewUserArgs): Promise<boolean> => {
+    if (await UserDataLayer.getUser(username)) return false;
     const bcryptedPassword = await getBcryptedPassword(password);
     await UserDataLayer.createNewUser({
       username,
@@ -35,5 +36,6 @@ export const AuthService = {
       last_name,
       ip,
     });
+    return true;
   },
 };

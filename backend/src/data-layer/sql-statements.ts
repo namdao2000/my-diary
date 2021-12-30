@@ -34,4 +34,7 @@ CREATE TABLE IF NOT EXISTS diary_document (
   getUserPassword: `
   SELECT password from user where username = ? 
   `,
+  getUser: `
+  SELECT * from user where username = ?
+  `,
 };
