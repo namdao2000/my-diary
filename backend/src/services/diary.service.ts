@@ -19,16 +19,16 @@ export interface CreateDiaryPageArgs extends DiaryPageContent {
   username: string;
 }
 
+export interface GetDiaryPagesArgs {
+  username: string;
+  offset: number;
+}
+
 export interface UpdateDiaryPageArgs extends DiaryPageContent, DiaryPageOwnership {}
 
 export interface DeleteDiaryPageArgs extends DiaryPageOwnership {}
 
 export interface GetOneDiaryPageArgs extends DiaryPageOwnership {}
-
-export interface GetDiaryPagesArgs {
-  username: string;
-  offset: number;
-}
 
 export const DiaryService = {
   getOneDiaryPage: async (args: GetOneDiaryPageArgs): Promise<DiaryPageSchema> => {
