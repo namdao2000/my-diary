@@ -1,12 +1,15 @@
 import { ReactElement, useMemo } from 'react';
-import { useLogin } from '../services/auth/use-login';
+import { LoginArgs, useLogin } from '../services/auth/use-login';
 import { toast } from 'react-hot-toast';
 import { useForm } from 'react-hook-form';
-import { Credentials } from '../types/credentials';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const Login = (): ReactElement => {
   const { login, loading } = useLogin();
+  const navigate = useNavigate();
+  const location = useLocation();
 
+  const from = (location as any)?.state?.from || '/';
   const {
     register,
     handleSubmit,
@@ -18,17 +21,14 @@ const Login = (): ReactElement => {
 
   const onSubmit = useMemo(
     () =>
-      handleSubmit(async (credentials: Credentials) => {
-        try {
-          await login({
-            credentials,
-            onSuccess: () => {
-              toast('success');
-              // TODO: useNavigate and navigate to the correct page.
-            },
-          });
-          // TODO: Navigate to the correct page.
-        } catch {}
+      handleSubmit(async (loginArgs: LoginArgs) => {
+        await login({
+          loginArgs,
+          onSuccess: () => {
+            toast.success('Login Successful');
+            navigate(from, { replace: true });
+          },
+        });
       }),
     [handleSubmit, login],
   );

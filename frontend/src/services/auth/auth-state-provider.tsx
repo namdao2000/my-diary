@@ -6,13 +6,13 @@ import {
   useContext,
   useState,
 } from 'react';
-import { User } from '../../types/user';
+import { UserInfo } from '../../types/user-Info';
 import { AuthStorageService } from './auth-storage.service';
 
 interface IAuthContext {
   isLoggedIn: boolean;
-  user?: User;
-  setUserLoggedIn: (user: User, token: string) => void;
+  user?: UserInfo;
+  setUserLoggedIn: (user: UserInfo, token: string) => void;
   setUserLoggedOut: () => void;
 }
 
@@ -33,9 +33,13 @@ export const AuthStateProvider = ({
 }: {
   children: ReactNode;
 }): ReactElement => {
-  const [isLoggedIn, setLoggedIn] = useState<boolean>(false);
+  const [isLoggedIn, setLoggedIn] = useState<boolean>(
+    !!AuthStorageService.getAccessToken(),
+  );
 
-  const [user, setUser] = useState<User | undefined>(undefined);
+  const [user, setUser] = useState<UserInfo | undefined>(
+    AuthStorageService.getUserInfo(),
+  );
 
   const setUserloggedOut = useCallback((): void => {
     setUser(undefined);
@@ -44,7 +48,7 @@ export const AuthStateProvider = ({
   }, [AuthStorageService]);
 
   const setUserLoggedIn = useCallback(
-    (user: User, token: string): void => {
+    (user: UserInfo, token: string): void => {
       AuthStorageService.setAccessToken(token);
       AuthStorageService.setUserInfo(user);
       setUser(user);

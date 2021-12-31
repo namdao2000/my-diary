@@ -1,9 +1,9 @@
-import { User } from '../../types/user';
+import { UserInfo } from '../../types/user-Info';
 
 export interface IAuthStorageService {
-  getUserInfo(): User | undefined;
+  getUserInfo(): UserInfo | undefined;
 
-  setUserInfo(userInfo: User): void;
+  setUserInfo(userInfo: UserInfo): void;
 
   getAccessToken(): string | undefined;
 
@@ -28,7 +28,7 @@ const clearValue = (key: string): void => {
 };
 
 export const AuthStorageService: IAuthStorageService = {
-  getUserInfo(): User | undefined {
+  getUserInfo(): UserInfo | undefined {
     const token = this.getAccessToken();
     if (!token) {
       return undefined;
@@ -39,7 +39,7 @@ export const AuthStorageService: IAuthStorageService = {
     }
     return JSON.parse(value);
   },
-  setUserInfo(userInfo: User): void {
+  setUserInfo(userInfo: UserInfo): void {
     setValue(UserKey, JSON.stringify(userInfo));
   },
   getAccessToken(): string | undefined {

@@ -4,6 +4,8 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { ScrollToTop } from '../components/route/scroll-to-top';
 import { routes } from '../utils/routes';
 import { Navbar } from '../components/navbar';
+import { AuthGuard } from '../services/auth/auth-guard';
+import { NamToolBar } from '../components/nam-tool-bar';
 
 const Login = lazy(() => import('./login'));
 const Home = lazy(() => import('./home'));
@@ -14,6 +16,7 @@ const Diary = lazy(() => import('./diary'));
 export const Pages = (): ReactElement => {
   return (
     <div className="h-screen w-screen">
+      {process.env.NODE_ENV === 'development' && <NamToolBar />}
       {/*Main content */}
       <Router>
         <Navbar />
@@ -56,9 +59,11 @@ export const Pages = (): ReactElement => {
             <Route
               path={routes.diary}
               element={
-                <React.Suspense fallback={<>...</>}>
-                  <Diary />
-                </React.Suspense>
+                <AuthGuard>
+                  <React.Suspense fallback={<>...</>}>
+                    <Diary />
+                  </React.Suspense>
+                </AuthGuard>
               }
             />
           </Routes>

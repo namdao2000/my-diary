@@ -1,31 +1,40 @@
 import { useCallback, useState } from 'react';
-import { Credentials } from '../../types/credentials';
 import { useAuthState } from './auth-state-provider';
+import { requestWithJWT } from '../axios/axios.wrapper';
+import { APP_URL } from '../../utils/constants';
+
+export interface LoginArgs {
+  username: string;
+  password: string;
+}
 
 export const useLogin = (): {
   login: ({
-    credentials,
+    loginArgs,
     onSuccess,
   }: {
-    credentials: Credentials;
+    loginArgs: LoginArgs;
     onSuccess: () => void;
   }) => Promise<void>;
   loading: boolean;
 } => {
   const [loading, setLoading] = useState(false);
 
-  const { isLoggedIn, setUserLoggedIn } = useAuthState();
+  const { setUserLoggedIn } = useAuthState();
 
-  const login = useCallback(
-    async ({ credentials, onSuccess }): Promise<void> => {
-      setLoading(true);
-      // TODO: Reach out to AXIOS, see if the username and password is correct.
-      //  If false, show a toaster. If true, call the onSuccess and place the user into the local storage.
-      setLoading(false);
+  const login = useCallback(async ({ loginArgs, onSuccess }): Promise<void> => {
+    setLoading(true);
+    const response = await requestWithJWT(
+      'post',
+      `${APP_URL}/login`,
+      loginArgs,
+    );
+    if (response) {
+      setUserLoggedIn(response.data.user, response.data.token);
       onSuccess();
-    },
-    [],
-  );
+    }
+    setLoading(false);
+  }, []);
 
   return {
     login,
