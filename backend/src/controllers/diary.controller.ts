@@ -17,7 +17,7 @@ export const DiaryController = {
   getAll: async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const { username } = res.locals;
-      const { offset } = req.query;
+      const offset = req.query.offset ?? 0;
 
       const result = await DiaryService.getDiaryPages({
         username,

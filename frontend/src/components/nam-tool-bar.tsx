@@ -1,17 +1,20 @@
 import React, { ReactElement } from 'react';
-import { requestWithJWT } from '../services/axios/axios.wrapper';
 import { useAuthState } from '../services/auth/auth-state-provider';
-import { toast } from 'react-hot-toast';
-import { APP_URL } from '../utils/constants';
+import { useDiary } from '../services/diary/use-diary';
 
 export const NamToolBar = (): ReactElement => {
   const { setUserLoggedOut } = useAuthState();
+  const { createDiaryPage, getDiaryPages } = useDiary();
+
   const createDiary = async (): Promise<void> => {
-    await requestWithJWT('post', `${APP_URL}/diary`, {
-      title: 'My 454 diary',
-      content: 'Please work lmao',
+    await createDiaryPage({
+      title: 'my mums a hoe',
+      content: 'say no more',
     });
-    toast.success('Created a new Diary entry');
+  };
+
+  const getDiary = async (): Promise<void> => {
+    console.log(await getDiaryPages());
   };
 
   return (
@@ -25,6 +28,12 @@ export const NamToolBar = (): ReactElement => {
           onClick={createDiary}
         >
           Create Diary
+        </button>
+        <button
+          className="rounded-lg bg-blue-500 p-1 text-sm mr-4"
+          onClick={getDiary}
+        >
+          Get Diary
         </button>
         <button
           className="rounded-lg bg-blue-500 p-1 text-sm"

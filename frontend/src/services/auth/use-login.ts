@@ -22,19 +22,22 @@ export const useLogin = (): {
 
   const { setUserLoggedIn } = useAuthState();
 
-  const login = useCallback(async ({ loginArgs, onSuccess }): Promise<void> => {
-    setLoading(true);
-    const response = await requestWithJWT(
-      'post',
-      `${APP_URL}/login`,
-      loginArgs,
-    );
-    if (response) {
-      setUserLoggedIn(response.data.user, response.data.token);
-      onSuccess();
-    }
-    setLoading(false);
-  }, []);
+  const login = useCallback(
+    async ({ loginArgs, onSuccess }): Promise<void> => {
+      setLoading(true);
+      const response = await requestWithJWT(
+        'post',
+        `${APP_URL}/login`,
+        loginArgs,
+      );
+      if (response) {
+        setUserLoggedIn(response.data.user, response.data.token);
+        onSuccess();
+      }
+      setLoading(false);
+    },
+    [setUserLoggedIn, requestWithJWT, setLoading],
+  );
 
   return {
     login,
