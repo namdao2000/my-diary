@@ -36,7 +36,7 @@ const Login = (): ReactElement => {
   return (
     <div className="flex justify-center">
       <form className="p-6 w-96" onSubmit={onSubmit}>
-        <div className="mb-3">
+        <div className="mb-10">
           <div className="mb-4">
             <div className="mb-2">
               <label>Username</label>

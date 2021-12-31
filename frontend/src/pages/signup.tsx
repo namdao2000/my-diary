@@ -38,7 +38,7 @@ const Signup = (): ReactElement => {
   return (
     <div className="flex justify-center">
       <form className="p-6 w-96" onSubmit={onSubmit}>
-        <div className="mb-3">
+        <div className="mb-10">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full mb-4">
             <div>
               <div className="mb-2">
@@ -113,7 +113,7 @@ const Signup = (): ReactElement => {
           className="bg-teal-500 hover:bg-teal-700 text-white font-bold py-3 px-4 rounded w-full"
           type="submit"
         >
-          Login
+          Signup
         </button>
       </form>
     </div>
