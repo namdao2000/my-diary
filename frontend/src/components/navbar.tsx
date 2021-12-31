@@ -15,8 +15,8 @@ export const Navbar = (): ReactElement => {
   }
 
   return (
-    <div className="bg-teal-500 px-10">
-      <nav className="flex items-center justify-between flex-wrap p-6">
+    <div className="bg-teal-500">
+      <nav className="flex items-center justify-between flex-wrap px-6 md:px-16 py-6">
         <div className="flex items-center flex-shrink-0 text-white mr-6">
           <span className="font-semibold text-xl tracking-tight">
             📔 My Diary
@@ -32,11 +32,11 @@ export const Navbar = (): ReactElement => {
               Home
             </Link>
             <Link
-              to={routes.diary}
+              to={routes.diaryFeed}
               state={location}
               className="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4"
             >
-              Diary
+              Feed
             </Link>
           </div>
           {!isLoggedIn && (

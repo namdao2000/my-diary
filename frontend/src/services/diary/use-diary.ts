@@ -13,20 +13,29 @@ export interface UpdateDiaryPageArgs extends CreateDiaryPageArgs {
 }
 
 export interface IUseDiaryReturn {
-  getDiaryPages: (offset?: number) => Promise<DiaryPage[]>;
+  getOneDiaryPage: (page_id: string) => Promise<DiaryPage>;
+  getDiaryPages: (page?: number) => Promise<DiaryPage[]>;
   createDiaryPage: (args: CreateDiaryPageArgs) => void;
   updateDiaryPage: (args: UpdateDiaryPageArgs) => void;
   deleteDiaryPage: (page_id: string) => void;
 }
 
 export const useDiary = (): IUseDiaryReturn => {
+  const getOneDiaryPage = useCallback(
+    async (page_id: string): Promise<DiaryPage> => {
+      const result = await requestWithJWT('get', `${APP_URL}/diary/${page_id}`);
+      return result?.data;
+    },
+    [requestWithJWT],
+  );
+
   const getDiaryPages = useCallback(
-    async (offset?: number): Promise<DiaryPage[]> => {
+    async (page?: number): Promise<DiaryPage[]> => {
       const result = await requestWithJWT(
         'get',
-        `${APP_URL}/diary?offset=${offset ?? 0}`,
+        `${APP_URL}/diary?page=${page ?? 1}`,
       );
-      return result?.data;
+      return result?.data.pages;
     },
     [requestWithJWT],
   );
@@ -53,6 +62,7 @@ export const useDiary = (): IUseDiaryReturn => {
   );
 
   return {
+    getOneDiaryPage,
     getDiaryPages,
     createDiaryPage,
     updateDiaryPage,

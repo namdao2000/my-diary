@@ -80,6 +80,11 @@ export const SQL_STATEMENTS = {
       FROM diary_page
       WHERE username = ?
       ORDER BY created_at DESC
-      LIMIT 10 OFFSET ?
+      LIMIT ? OFFSET ?
   `,
+  getDiaryPagesCount: `
+      SELECT COUNT(*) as count
+      FROM diary_page
+      WHERE username = ?;
+   `,
 };

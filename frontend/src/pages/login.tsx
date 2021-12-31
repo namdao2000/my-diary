@@ -2,7 +2,8 @@ import { ReactElement, useMemo } from 'react';
 import { LoginArgs, useLogin } from '../services/auth/use-login';
 import { toast } from 'react-hot-toast';
 import { useForm } from 'react-hook-form';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { routes } from '../utils/routes';
 
 const Login = (): ReactElement => {
   const { login, loading } = useLogin();
@@ -36,7 +37,7 @@ const Login = (): ReactElement => {
   return (
     <div className="flex justify-center">
       <form className="p-6 w-96" onSubmit={onSubmit}>
-        <div className="mb-10">
+        <div className="mb-6">
           <div className="mb-4">
             <div className="mb-2">
               <label>Username</label>
@@ -67,6 +68,12 @@ const Login = (): ReactElement => {
             )}
           </div>
         </div>
+        <p className="medium-paragraph mb-1">
+          Don&apos;t have an account?
+          <Link to={routes.signup} className="ml-2 text-link text-teal-400">
+            Sign up
+          </Link>
+        </p>
         <button
           className="bg-teal-500 hover:bg-teal-700 text-white font-bold py-3 px-4 rounded w-full"
           type="submit"

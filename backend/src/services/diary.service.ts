@@ -21,7 +21,8 @@ export interface CreateDiaryPageArgs extends DiaryPageContent {
 
 export interface GetDiaryPagesArgs {
   username: string;
-  offset: number;
+  limit: number;
+  page: number;
 }
 
 export interface UpdateDiaryPageArgs extends DiaryPageContent, DiaryPageOwnership {}
@@ -41,7 +42,11 @@ export const DiaryService = {
   getDiaryPages: async (
     args: GetDiaryPagesArgs,
   ): Promise<DiaryPageSchema[] | undefined> => {
-    return await DiaryDataLayer.getDiaryPages(args.username, args.offset);
+    const offset = (args.page - 1) * args.limit;
+    return await DiaryDataLayer.getDiaryPages(args.username, args.limit, offset);
+  },
+  getDiaryPagesCount: async (username: string): Promise<number> => {
+    return await DiaryDataLayer.getDiaryPagesCount(username);
   },
   createDiaryPage: async (args: CreateDiaryPageArgs): Promise<void> => {
     await DiaryDataLayer.createDiaryPage(args);

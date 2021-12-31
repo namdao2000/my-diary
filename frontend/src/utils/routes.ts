@@ -3,5 +3,6 @@ export const routes = {
   forgotPassword: '/forgot-password',
   signup: '/signup',
   login: '/login',
-  diary: '/diary'
+  diaryFeed: '/diary',
+  diary: '/diary/:page_id',
 };

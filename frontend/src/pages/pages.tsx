@@ -6,11 +6,12 @@ import { routes } from '../utils/routes';
 import { Navbar } from '../components/navbar';
 import { AuthGuard } from '../services/auth/auth-guard';
 import { NamToolBar } from '../components/nam-tool-bar';
+import Signup from './signup';
+import Login from './login';
+import ForgotPassword from './forgot-password';
 
-const Login = lazy(() => import('./login'));
 const Home = lazy(() => import('./home'));
-const Signup = lazy(() => import('./signup'));
-const ForgotPassword = lazy(() => import('./forgot-password'));
+const DiaryFeed = lazy(() => import('./diary-feed'));
 const Diary = lazy(() => import('./diary'));
 
 export const Pages = (): ReactElement => {
@@ -22,7 +23,7 @@ export const Pages = (): ReactElement => {
         <Navbar />
         <ScrollToTop />
 
-        <div className="pt-4 px-16">
+        <div className="pt-4 px-6 md:px-16">
           <Routes>
             <Route
               path={routes.home}
@@ -32,28 +33,17 @@ export const Pages = (): ReactElement => {
                 </React.Suspense>
               }
             />
+            <Route path={routes.login} element={<Login />} />
+            <Route path={routes.signup} element={<Signup />} />
+            <Route path={routes.forgotPassword} element={<ForgotPassword />} />
             <Route
-              path={routes.login}
+              path={routes.diaryFeed}
               element={
-                <React.Suspense fallback={<>...</>}>
-                  <Login />
-                </React.Suspense>
-              }
-            />
-            <Route
-              path={routes.signup}
-              element={
-                <React.Suspense fallback={<>...</>}>
-                  <Signup />
-                </React.Suspense>
-              }
-            />
-            <Route
-              path={routes.forgotPassword}
-              element={
-                <React.Suspense fallback={<>...</>}>
-                  <ForgotPassword />
-                </React.Suspense>
+                <AuthGuard>
+                  <React.Suspense fallback={<>...</>}>
+                    <DiaryFeed />
+                  </React.Suspense>
+                </AuthGuard>
               }
             />
             <Route

@@ -17,13 +17,19 @@ export const DiaryController = {
   getAll: async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const { username } = res.locals;
-      const offset = req.query.offset ?? 0;
-
+      const page = req.query.page ?? 1;
+      const limit = 15;
+      const pageCount = await DiaryService.getDiaryPagesCount(username);
+      const finalPage = Math.ceil(pageCount / limit);
       const result = await DiaryService.getDiaryPages({
         username,
-        offset: parseInt(offset as string),
+        limit,
+        page: parseInt(page as string),
       });
-      res.status(200).json(result);
+      res.status(200).json({
+        pages: result,
+        final_page: finalPage,
+      });
       next();
     } catch (e) {
       next(e);

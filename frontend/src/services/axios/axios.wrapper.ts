@@ -14,6 +14,8 @@ export const requestWithJWT = async (
   data?: any,
 ): Promise<AxiosResponse | undefined> => {
   try {
+    if (process.env.NODE_ENV === 'development')
+      console.log('network call made:', method, url, data);
     const token = AuthStorageService.getAccessToken();
     const config = {
       headers: {

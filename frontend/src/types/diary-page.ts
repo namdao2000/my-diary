@@ -3,6 +3,6 @@ export type DiaryPage = {
   username: string;
   title: string;
   content: string;
-  updatedAt: Date;
-  createdAt: Date;
+  updated_at: Date;
+  created_at: Date;
 };

@@ -39,9 +39,17 @@ export const DiaryDataLayer = {
   getOneDiaryPage: async (page_id: string): Promise<DiaryPageSchema | undefined> => {
     return await (await DB).get<DiaryPageSchema>(SQL_STATEMENTS.getDiaryPage, [page_id]);
   },
-  getDiaryPages: async (username: string, offset: number): Promise<DiaryPageSchema[]> => {
+  getDiaryPages: async (
+    username: string,
+    limit: number,
+    offset: number,
+  ): Promise<DiaryPageSchema[]> => {
     return await (
       await DB
-    ).all<DiaryPageSchema[]>(SQL_STATEMENTS.getDiaryPages, [username, offset]);
+    ).all<DiaryPageSchema[]>(SQL_STATEMENTS.getDiaryPages, [username, limit, offset]);
+  },
+  getDiaryPagesCount: async (username: string): Promise<number> => {
+    const result = await (await DB).get(SQL_STATEMENTS.getDiaryPagesCount, [username]);
+    return result.count;
   },
 };
