@@ -14,12 +14,14 @@ import { AuthRouter } from './routes/auth.routes';
 import { errorHandler } from './middleware/error-handler.middleware';
 import { resJsonInterceptor } from './middleware/res-json-interceptor.middleware';
 import { DiaryRouter } from './routes/diary.routes';
+import cors from 'cors';
 
 const app = express();
 
 // user's Content-Type has to be application/json
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cors());
 
 // Security
 app.use(helmet());

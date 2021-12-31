@@ -18,14 +18,15 @@ export const AuthController = {
     next: NextFunction,
   ): Promise<void> => {
     try {
-      const response = await AuthService.verifyUserCredentials(req.body);
-      if (!response) {
+      const user = await AuthService.verifyUserCredentials(req.body);
+      if (!user) {
         next(getHttpErrorResponse(ErrorCode.INVALID_CREDENTIALS));
       } else {
         const token = await AuthService.generateJWT(req.body.username);
         res.status(200).json({
           message: 'Login Success!',
           token,
+          user,
         });
         next();
       }
@@ -47,6 +48,11 @@ export const AuthController = {
       res.status(201).json({
         message: `Successfully registered a new user ${req.body.username}.`,
         token,
+        user: {
+          username: req.body.username,
+          first_name: req.body.first_name,
+          last_name: req.body.last_name,
+        },
       });
       next();
     } catch (e) {

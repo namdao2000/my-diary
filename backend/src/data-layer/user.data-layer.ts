@@ -12,6 +12,12 @@ export interface UserSchema {
   updated_at: string;
 }
 
+export interface UserInfo {
+  username: string;
+  first_name: string;
+  last_name: string;
+}
+
 export const UserDataLayer = {
   createNewUser: async ({
     username,

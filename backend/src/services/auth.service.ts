@@ -1,5 +1,5 @@
 import { SignupReqArgs } from '../controllers/auth.controller';
-import { UserDataLayer } from '../data-layer/user.data-layer';
+import { UserDataLayer, UserInfo } from '../data-layer/user.data-layer';
 import { getBcryptedPassword, verifyPassword } from '../utils/bcrypt';
 import jwt from 'jsonwebtoken';
 import { JWT_SECRET } from '../utils/constants';
@@ -22,10 +22,20 @@ export const AuthService = {
   verifyUserCredentials: async ({
     username,
     password,
-  }: Credentials): Promise<boolean> => {
+  }: Credentials): Promise<UserInfo | undefined> => {
     const bcryptedPassword = await UserDataLayer.getUserPassword(username);
-    if (!bcryptedPassword) return false;
-    return verifyPassword({ bcryptedPassword, password });
+    if (!bcryptedPassword) return;
+    const validPassword = await verifyPassword({ bcryptedPassword, password });
+    if (validPassword) {
+      const user = await UserDataLayer.getUser(username);
+      if (user) {
+        return {
+          username: user.username,
+          first_name: user.first_name,
+          last_name: user.last_name,
+        };
+      }
+    }
   },
   createNewUser: async ({
     username,
