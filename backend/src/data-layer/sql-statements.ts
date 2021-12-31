@@ -71,15 +71,15 @@ export const SQL_STATEMENTS = {
       WHERE page_id = ?;
   `,
   getDiaryPage: `
-      SELECT *
+      SELECT page_id, username, title, content, datetime(created_at,'localtime') as created_at, datetime(updated_at,'localtime') as updated_at
       FROM diary_page
       WHERE page_id = ?;
   `,
   getDiaryPages: `
-      SELECT *
+      SELECT page_id, username, title, content, datetime(created_at,'localtime') as created_at, datetime(updated_at,'localtime') as updated_at
       FROM diary_page
       WHERE username = ?
-      ORDER BY created_at DESC
+      ORDER BY updated_at DESC
       LIMIT ? OFFSET ?
   `,
   getDiaryPagesCount: `

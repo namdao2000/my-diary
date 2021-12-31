@@ -8,12 +8,19 @@ const Diary = (): ReactElement => {
   const { page_id } = useParams();
   const { getOneDiaryPage } = useDiary();
   const [diaryPage, setDiaryPage] = useState<DiaryPage | undefined>();
-
+  const [isLoading, setLoading] = useState(true);
   useEffectOnce(() => {
     if (page_id) {
-      getOneDiaryPage(page_id).then((data) => setDiaryPage(data));
+      getOneDiaryPage(page_id).then((data) => {
+        setDiaryPage(data);
+        setLoading(false);
+      });
+    } else {
+      setLoading(false);
     }
   });
+
+  if (isLoading) return <>Loading...</>;
 
   return (
     <>
