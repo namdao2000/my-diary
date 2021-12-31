@@ -2,11 +2,12 @@ import React, { ReactElement } from 'react';
 import { requestWithJWT } from '../services/axios/axios.wrapper';
 import { useAuthState } from '../services/auth/auth-state-provider';
 import { toast } from 'react-hot-toast';
+import { APP_URL } from '../utils/constants';
 
 export const NamToolBar = (): ReactElement => {
   const { setUserLoggedOut } = useAuthState();
   const createDiary = async (): Promise<void> => {
-    await requestWithJWT('post', 'http://localhost:8080/my-diary/v1/diary', {
+    await requestWithJWT('post', `${APP_URL}/diary`, {
       title: 'My 454 diary',
       content: 'Please work lmao',
     });
