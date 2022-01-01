@@ -14,7 +14,7 @@ export interface UpdateDiaryPageArgs extends CreateDiaryPageArgs {
 
 export interface IUseDiaryReturn {
   getOneDiaryPage: (page_id: string) => Promise<DiaryPage>;
-  getDiaryPages: (page?: number) => Promise<DiaryPage[]>;
+  getDiaryPages: (page: number) => Promise<DiaryPage[]>;
   createDiaryPage: (args: CreateDiaryPageArgs) => void;
   updateDiaryPage: (args: UpdateDiaryPageArgs) => void;
   deleteDiaryPage: (page_id: string) => void;
@@ -30,10 +30,10 @@ export const useDiary = (): IUseDiaryReturn => {
   );
 
   const getDiaryPages = useCallback(
-    async (page?: number): Promise<DiaryPage[]> => {
+    async (page: number): Promise<DiaryPage[]> => {
       const result = await requestWithJWT(
         'get',
-        `${APP_URL}/diary?page=${page ?? 1}`,
+        `${APP_URL}/diary?page=${page}`,
       );
       return result?.data.pages;
     },

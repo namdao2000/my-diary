@@ -2,45 +2,49 @@ import { ReactElement, useMemo, useState } from 'react';
 import { useEffectOnce } from 'react-use';
 import { useDiary } from '../services/diary/use-diary';
 import { DiaryPage } from '../types/diary-page';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { routes } from '../utils/routes';
-import TimeAgo from 'react-timeago';
-
-const DiaryPageListItem = ({
-  diaryPage,
-}: {
-  diaryPage: DiaryPage;
-}): ReactElement => {
-  const navigate = useNavigate();
-  const handleClick = (): void => {
-    navigate(`${routes.diaryFeed}/${diaryPage.page_id}`);
-  };
-  return (
-    <div
-      className="flex flex-row items-center border py-2 cursor-pointer"
-      onClick={handleClick}
-    >
-      <p className="ml-2 basis-11/12">{diaryPage.title}</p>
-      <p className="ml-20 text-sm text-gray-600 basis-1/12 ">
-        <TimeAgo date={new Date(diaryPage.updated_at)} />
-      </p>
-    </div>
-  );
-};
+import { DiaryListItem } from '../components/diary-list-item';
 
 const DiaryFeed = (): ReactElement => {
-  const { getDiaryPages } = useDiary();
+  const { getDiaryPages, deleteDiaryPage } = useDiary();
+  const [searchParams] = useSearchParams();
+  const pageParam = searchParams.get('page');
+  const pageNumber = pageParam ? parseInt(pageParam) : 1;
   const [diary, setDiary] = useState<DiaryPage[]>([]);
+  const navigate = useNavigate();
 
   useEffectOnce(() => {
-    getDiaryPages().then((data) => {
+    getDiaryPages(pageNumber).then((data) => {
       setDiary(data);
     });
   });
 
+  const handleSelect = (page_id: string): void => {
+    navigate(`${routes.diaryFeed}/${page_id}`);
+  };
+
+  const handleDelete = async (
+    page_id: string,
+    index: number,
+  ): Promise<void> => {
+    await deleteDiaryPage(page_id);
+    setDiary(
+      diary.filter((value, i) => {
+        return i !== index;
+      }),
+    );
+  };
+
   const getDiaryListItems = useMemo(() => {
-    return diary.map((diary) => (
-      <DiaryPageListItem key={diary.page_id} diaryPage={diary} />
+    return diary.map((diary, index) => (
+      <DiaryListItem
+        key={diary.page_id}
+        diaryPage={diary}
+        index={index}
+        onSelect={handleSelect}
+        onDelete={handleDelete}
+      />
     ));
   }, [diary]);
 
