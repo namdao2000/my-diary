@@ -1,24 +1,27 @@
-import { ReactElement, useMemo, useState } from 'react';
+import { ReactElement, useEffect, useMemo } from 'react';
 import { useEffectOnce } from 'react-use';
 import { useDiary } from '../services/diary/use-diary';
-import { DiaryPage } from '../types/diary-page';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { routes } from '../utils/routes';
 import { DiaryListItem } from '../components/diary-list-item';
+import { Pagination } from '../components/pagination';
+import { useDiaryState } from '../services/diary/diary-state-provider';
 
 const DiaryFeed = (): ReactElement => {
-  const { getDiaryPages, deleteDiaryPage } = useDiary();
+  const { diaryPages, count, limitPerPage, finalPage } = useDiaryState();
+  const { loadDiaryPages, deleteDiaryPage } = useDiary();
   const [searchParams] = useSearchParams();
   const pageParam = searchParams.get('page');
   const pageNumber = pageParam ? parseInt(pageParam) : 1;
-  const [diary, setDiary] = useState<DiaryPage[]>([]);
   const navigate = useNavigate();
 
-  useEffectOnce(() => {
-    getDiaryPages(pageNumber).then((data) => {
-      setDiary(data);
-    });
-  });
+  useEffect(() => {
+    loadDiaryPages(pageNumber);
+  }, [pageNumber]);
+
+  const handleNavigate = (page: number): void => {
+    navigate(`${routes.diaryFeed}?page=${page}`);
+  };
 
   const handleSelect = (page_id: string): void => {
     navigate(`${routes.diaryFeed}/${page_id}`);
@@ -28,16 +31,11 @@ const DiaryFeed = (): ReactElement => {
     page_id: string,
     index: number,
   ): Promise<void> => {
-    await deleteDiaryPage(page_id);
-    setDiary(
-      diary.filter((value, i) => {
-        return i !== index;
-      }),
-    );
+    await deleteDiaryPage(page_id, index);
   };
 
   const getDiaryListItems = useMemo(() => {
-    return diary.map((diary, index) => (
+    return diaryPages.map((diary, index) => (
       <DiaryListItem
         key={diary.page_id}
         diaryPage={diary}
@@ -46,13 +44,24 @@ const DiaryFeed = (): ReactElement => {
         onDelete={handleDelete}
       />
     ));
-  }, [diary]);
+  }, [diaryPages]);
 
   return (
-    <div>
-      <p className="font-bold mb-2">Diary Entries</p>
-      <div>{getDiaryListItems}</div>
-    </div>
+    <>
+      <div>
+        <p className="font-bold h-full mb-2">Diary Entries</p>
+        <div>{getDiaryListItems}</div>
+      </div>
+      {limitPerPage && count && finalPage && (
+        <Pagination
+          currentIndex={pageNumber}
+          onNavigate={handleNavigate}
+          resultsPerPage={limitPerPage}
+          totalResults={count}
+          finalIndex={finalPage}
+        />
+      )}
+    </>
   );
 };
 

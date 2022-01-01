@@ -19,8 +19,8 @@ export const DiaryController = {
       const { username } = res.locals;
       const page = req.query.page ?? 1;
       const limit = 15;
-      const pageCount = await DiaryService.getDiaryPagesCount(username);
-      const finalPage = Math.ceil(pageCount / limit);
+      const count = await DiaryService.getDiaryPagesCount(username);
+      const final_page = Math.ceil(count / limit);
       const result = await DiaryService.getDiaryPages({
         username,
         limit,
@@ -28,7 +28,9 @@ export const DiaryController = {
       });
       res.status(200).json({
         pages: result,
-        final_page: finalPage,
+        count,
+        limit,
+        final_page,
       });
       next();
     } catch (e) {

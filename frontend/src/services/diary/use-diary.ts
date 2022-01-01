@@ -2,6 +2,7 @@ import { DiaryPage } from '../../types/diary-page';
 import { useCallback } from 'react';
 import { requestWithJWT } from '../axios/axios.wrapper';
 import { APP_URL } from '../../utils/constants';
+import { useDiaryState } from './diary-state-provider';
 
 export interface CreateDiaryPageArgs {
   title: string;
@@ -12,32 +13,52 @@ export interface UpdateDiaryPageArgs extends CreateDiaryPageArgs {
   page_id: string;
 }
 
+export interface GetDiaryPagesReturn {
+  count: number;
+  limit: number;
+  pages: DiaryPage[];
+}
+
 export interface IUseDiaryReturn {
-  getOneDiaryPage: (page_id: string) => Promise<DiaryPage>;
-  getDiaryPages: (page: number) => Promise<DiaryPage[]>;
+  loadOneDiaryPage: (page_id: string) => Promise<void>;
+  loadDiaryPages: (page: number) => Promise<void>;
   createDiaryPage: (args: CreateDiaryPageArgs) => void;
   updateDiaryPage: (args: UpdateDiaryPageArgs) => void;
-  deleteDiaryPage: (page_id: string) => void;
+  deleteDiaryPage: (page_id: string, index: number) => void;
 }
 
 export const useDiary = (): IUseDiaryReturn => {
-  const getOneDiaryPage = useCallback(
-    async (page_id: string): Promise<DiaryPage> => {
+  const {
+    diaryPages,
+    count,
+    setDiaryPages,
+    setCurrentDiaryPage,
+    setFinalPage,
+    setCount,
+    setLimitPerPage,
+  } = useDiaryState();
+
+  const loadOneDiaryPage = useCallback(
+    async (page_id: string): Promise<void> => {
       const result = await requestWithJWT('get', `${APP_URL}/diary/${page_id}`);
-      return result?.data;
+      setCurrentDiaryPage(result?.data);
     },
-    [requestWithJWT],
+    [requestWithJWT, setCurrentDiaryPage],
   );
 
-  const getDiaryPages = useCallback(
-    async (page: number): Promise<DiaryPage[]> => {
+  const loadDiaryPages = useCallback(
+    async (page: number): Promise<void> => {
       const result = await requestWithJWT(
         'get',
         `${APP_URL}/diary?page=${page}`,
       );
-      return result?.data.pages;
+      const { pages, final_page, count, limit } = result?.data;
+      setDiaryPages(pages);
+      setCount(count);
+      setFinalPage(final_page);
+      setLimitPerPage(limit);
     },
-    [requestWithJWT],
+    [requestWithJWT, setDiaryPages, setCount, setFinalPage, setLimitPerPage],
   );
 
   const createDiaryPage = useCallback(
@@ -55,15 +76,21 @@ export const useDiary = (): IUseDiaryReturn => {
   );
 
   const deleteDiaryPage = useCallback(
-    async (page_id: string): Promise<void> => {
+    async (page_id: string, index: number): Promise<void> => {
       await requestWithJWT('delete', `${APP_URL}/diary/${page_id}`);
+      setDiaryPages(
+        diaryPages.filter((value, i) => {
+          return i !== index;
+        }),
+      );
+      if (count) setCount(count - 1);
     },
-    [requestWithJWT],
+    [requestWithJWT, setDiaryPages, diaryPages, setCount],
   );
 
   return {
-    getOneDiaryPage,
-    getDiaryPages,
+    loadOneDiaryPage,
+    loadDiaryPages,
     createDiaryPage,
     updateDiaryPage,
     deleteDiaryPage,
