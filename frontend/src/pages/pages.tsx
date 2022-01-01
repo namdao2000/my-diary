@@ -2,13 +2,15 @@ import React from 'react';
 import { lazy, ReactElement } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { ScrollToTop } from '../components/route/scroll-to-top';
-import { routes } from '../utils/routes';
+import { ROUTES } from '../utils/routes';
 import { Navbar } from '../components/navbar';
 import { AuthGuard } from '../services/auth/auth-guard';
 import { NamToolBar } from '../components/nam-tool-bar';
 import Signup from './signup';
 import Login from './login';
 import ForgotPassword from './forgot-password';
+import { Page404 } from './404';
+import { PageLayout } from '../components/page-layout';
 
 const Home = lazy(() => import('./home'));
 const DiaryFeed = lazy(() => import('./diary-feed'));
@@ -23,21 +25,22 @@ export const Pages = (): ReactElement => {
         <Navbar />
         <ScrollToTop />
 
-        <div className="pt-4 px-6 md:px-16 lg:px-32 h-full">
+        <PageLayout>
           <Routes>
             <Route
-              path={routes.home}
+              path={ROUTES.home}
               element={
                 <React.Suspense fallback={<>...</>}>
                   <Home />
                 </React.Suspense>
               }
             />
-            <Route path={routes.login} element={<Login />} />
-            <Route path={routes.signup} element={<Signup />} />
-            <Route path={routes.forgotPassword} element={<ForgotPassword />} />
+            <Route path={ROUTES.login} element={<Login />} />
+            <Route path={ROUTES.signup} element={<Signup />} />
+            <Route path={ROUTES.forgotPassword} element={<ForgotPassword />} />
+            <Route path={ROUTES.page404} element={<Page404 />} />
             <Route
-              path={routes.diaryFeed}
+              path={ROUTES.diaryFeed}
               element={
                 <AuthGuard>
                   <React.Suspense fallback={<>...</>}>
@@ -47,7 +50,7 @@ export const Pages = (): ReactElement => {
               }
             />
             <Route
-              path={routes.diary}
+              path={ROUTES.diary}
               element={
                 <AuthGuard>
                   <React.Suspense fallback={<>...</>}>
@@ -57,7 +60,7 @@ export const Pages = (): ReactElement => {
               }
             />
           </Routes>
-        </div>
+        </PageLayout>
       </Router>
     </div>
   );

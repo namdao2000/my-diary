@@ -8,8 +8,8 @@ export const NamToolBar = (): ReactElement => {
 
   const createDiary = async (): Promise<void> => {
     await createDiaryPage({
-      title: 'my mums a hoe',
-      content: 'say no more',
+      title: 'example diary',
+      content: '<p>Hello world!</p><p><br></p><p>STOP</p>',
     });
   };
 

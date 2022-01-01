@@ -13,9 +13,10 @@ export interface UpdateDiaryPageArgs extends CreateDiaryPageArgs {
   page_id: string;
 }
 
-export interface GetDiaryPagesReturn {
+export interface SetDiaryPagesArgs {
   count: number;
   limit: number;
+  final_page: number;
   pages: DiaryPage[];
 }
 
@@ -36,6 +37,7 @@ export const useDiary = (): IUseDiaryReturn => {
     setFinalPage,
     setCount,
     setLimitPerPage,
+    currentDiaryPage,
   } = useDiaryState();
 
   const loadOneDiaryPage = useCallback(
@@ -71,7 +73,20 @@ export const useDiary = (): IUseDiaryReturn => {
 
   const updateDiaryPage = useCallback(
     async (args: UpdateDiaryPageArgs): Promise<void> => {
-      await requestWithJWT('put', `${APP_URL}/diary`, args);
+      const { page_id, title, content } = args;
+      await requestWithJWT('put', `${APP_URL}/diary/${page_id}`, {
+        title,
+        content,
+      });
+      const newDiaryPage: DiaryPage = {
+        page_id,
+        username: currentDiaryPage?.username as string,
+        title,
+        content,
+        updated_at: new Date(),
+        created_at: currentDiaryPage?.created_at as Date,
+      };
+      setCurrentDiaryPage(newDiaryPage);
     },
     [requestWithJWT],
   );

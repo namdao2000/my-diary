@@ -2,7 +2,7 @@ import { ReactElement, useEffect, useMemo } from 'react';
 import { useEffectOnce } from 'react-use';
 import { useDiary } from '../services/diary/use-diary';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { routes } from '../utils/routes';
+import { ROUTES } from '../utils/routes';
 import { DiaryListItem } from '../components/diary-list-item';
 import { Pagination } from '../components/pagination';
 import { useDiaryState } from '../services/diary/diary-state-provider';
@@ -20,11 +20,11 @@ const DiaryFeed = (): ReactElement => {
   }, [pageNumber]);
 
   const handleNavigate = (page: number): void => {
-    navigate(`${routes.diaryFeed}?page=${page}`);
+    navigate(`${ROUTES.diaryFeed}?page=${page}`);
   };
 
   const handleSelect = (page_id: string): void => {
-    navigate(`${routes.diaryFeed}/${page_id}`);
+    navigate(`${ROUTES.diaryFeed}/${page_id}`);
   };
 
   const handleDelete = async (
@@ -39,7 +39,7 @@ const DiaryFeed = (): ReactElement => {
       title: 'Diary Title...',
       content: '',
     });
-    navigate(`${routes.diaryFeed}/${page_id}`);
+    navigate(`${ROUTES.diaryFeed}/${page_id}`);
   };
 
   const getDiaryListItems = useMemo(() => {

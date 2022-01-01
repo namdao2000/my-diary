@@ -1,7 +1,7 @@
 import { useAuthState } from './auth-state-provider';
 import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { routes } from '../../utils/routes';
+import { ROUTES } from '../../utils/routes';
 
 export const useLogout = (): (() => void) => {
   const { setUserLoggedOut } = useAuthState();
@@ -9,6 +9,6 @@ export const useLogout = (): (() => void) => {
 
   return useCallback(() => {
     setUserLoggedOut();
-    navigate(routes.login, { replace: true });
+    navigate(ROUTES.login, { replace: true });
   }, [setUserLoggedOut, navigate]);
 };

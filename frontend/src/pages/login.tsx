@@ -3,7 +3,7 @@ import { LoginArgs, useLogin } from '../services/auth/use-login';
 import { toast } from 'react-hot-toast';
 import { useForm } from 'react-hook-form';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { routes } from '../utils/routes';
+import { ROUTES } from '../utils/routes';
 
 const Login = (): ReactElement => {
   const { login, loading } = useLogin();
@@ -70,7 +70,7 @@ const Login = (): ReactElement => {
         </div>
         <p className="medium-paragraph mb-1">
           Don&apos;t have an account?
-          <Link to={routes.signup} className="ml-2 text-link text-teal-400">
+          <Link to={ROUTES.signup} className="ml-2 text-link text-teal-400">
             Sign up
           </Link>
         </p>
