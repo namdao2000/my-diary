@@ -23,7 +23,7 @@ export const Pages = (): ReactElement => {
         <Navbar />
         <ScrollToTop />
 
-        <div className="pt-4 px-6 md:px-16 h-full">
+        <div className="pt-4 px-6 md:px-16 lg:px-32 h-full">
           <Routes>
             <Route
               path={routes.home}

@@ -41,9 +41,10 @@ export const DiaryController = {
     const { username } = res.locals;
     const { content, title } = req.body;
     try {
-      await DiaryService.createDiaryPage({ username, title, content });
+      const result = await DiaryService.createDiaryPage({ username, title, content });
       res.status(201).json({
         message: 'Successfully created a new diary page!',
+        page_id: result,
       });
       next();
     } catch (e) {

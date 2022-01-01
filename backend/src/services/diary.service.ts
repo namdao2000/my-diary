@@ -48,8 +48,8 @@ export const DiaryService = {
   getDiaryPagesCount: async (username: string): Promise<number> => {
     return await DiaryDataLayer.getDiaryPagesCount(username);
   },
-  createDiaryPage: async (args: CreateDiaryPageArgs): Promise<void> => {
-    await DiaryDataLayer.createDiaryPage(args);
+  createDiaryPage: async (args: CreateDiaryPageArgs): Promise<string> => {
+    return await DiaryDataLayer.createDiaryPage(args);
   },
   updateDiaryPage: async (args: UpdateDiaryPageArgs): Promise<void> => {
     await DiaryService.validateDiaryPageOwnership({

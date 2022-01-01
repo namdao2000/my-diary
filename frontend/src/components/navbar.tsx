@@ -16,7 +16,7 @@ export const Navbar = (): ReactElement => {
 
   return (
     <div className="bg-teal-500">
-      <nav className="flex items-center justify-between flex-wrap px-6 md:px-16 py-6">
+      <nav className="flex items-center justify-between flex-wrap px-6 md:px-16 lg:px-32 py-6">
         <div className="flex items-center flex-shrink-0 text-white mr-6">
           <span className="font-semibold text-xl tracking-tight">
             📔 My Diary

@@ -9,7 +9,7 @@ import { useDiaryState } from '../services/diary/diary-state-provider';
 
 const DiaryFeed = (): ReactElement => {
   const { diaryPages, count, limitPerPage, finalPage } = useDiaryState();
-  const { loadDiaryPages, deleteDiaryPage } = useDiary();
+  const { loadDiaryPages, deleteDiaryPage, createDiaryPage } = useDiary();
   const [searchParams] = useSearchParams();
   const pageParam = searchParams.get('page');
   const pageNumber = pageParam ? parseInt(pageParam) : 1;
@@ -34,6 +34,14 @@ const DiaryFeed = (): ReactElement => {
     await deleteDiaryPage(page_id, index);
   };
 
+  const handleCreate = async (): Promise<void> => {
+    const page_id = await createDiaryPage({
+      title: 'Diary Title...',
+      content: '',
+    });
+    navigate(`${routes.diaryFeed}/${page_id}`);
+  };
+
   const getDiaryListItems = useMemo(() => {
     return diaryPages.map((diary, index) => (
       <DiaryListItem
@@ -49,7 +57,15 @@ const DiaryFeed = (): ReactElement => {
   return (
     <>
       <div>
-        <p className="font-bold h-full mb-2">Diary Entries</p>
+        <div className="flex justify-between mb-2">
+          <p className="font-bold h-full">Diary Entries</p>
+          <button
+            onClick={handleCreate}
+            className="bg-teal-500 hover:bg-teal-700 text-white font-bold text-sm py-1 px-2 rounded"
+          >
+            New
+          </button>
+        </div>
         <div>{getDiaryListItems}</div>
       </div>
       {limitPerPage && count && finalPage && (

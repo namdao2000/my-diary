@@ -17,10 +17,12 @@ export const DiaryDataLayer = {
     username,
     title,
     content,
-  }: CreateDiaryPageArgs): Promise<void> => {
+  }: CreateDiaryPageArgs): Promise<string> => {
+    const page_id = v4();
     await (
       await DB
-    ).run(SQL_STATEMENTS.createDiaryPage, [v4(), username, title, content]);
+    ).run(SQL_STATEMENTS.createDiaryPage, [page_id, username, title, content]);
+    return page_id;
   },
   updateDiaryPage: async ({
     title,

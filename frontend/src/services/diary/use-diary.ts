@@ -22,7 +22,7 @@ export interface GetDiaryPagesReturn {
 export interface IUseDiaryReturn {
   loadOneDiaryPage: (page_id: string) => Promise<void>;
   loadDiaryPages: (page: number) => Promise<void>;
-  createDiaryPage: (args: CreateDiaryPageArgs) => void;
+  createDiaryPage: (args: CreateDiaryPageArgs) => Promise<string>;
   updateDiaryPage: (args: UpdateDiaryPageArgs) => void;
   deleteDiaryPage: (page_id: string, index: number) => void;
 }
@@ -62,8 +62,9 @@ export const useDiary = (): IUseDiaryReturn => {
   );
 
   const createDiaryPage = useCallback(
-    async (args: CreateDiaryPageArgs): Promise<void> => {
-      await requestWithJWT('post', `${APP_URL}/diary`, args);
+    async (args: CreateDiaryPageArgs): Promise<string> => {
+      const result = await requestWithJWT('post', `${APP_URL}/diary`, args);
+      return result?.data.page_id;
     },
     [requestWithJWT],
   );
