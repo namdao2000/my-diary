@@ -50,6 +50,7 @@ const DiaryFeed = (): ReactElement => {
         index={index}
         onSelect={handleSelect}
         onDelete={handleDelete}
+        publicMode={false}
       />
     ));
   }, [diaryPages]);

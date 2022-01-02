@@ -8,9 +8,11 @@ export const DiaryListItem = ({
   index,
   onSelect,
   onDelete,
+  publicMode,
 }: {
   diaryPage: DiaryPage;
   index: number;
+  publicMode: boolean;
   onSelect: (page_id: string) => void;
   onDelete: (page_id: string, index: number) => void;
 }): ReactElement => {
@@ -24,17 +26,22 @@ export const DiaryListItem = ({
 
   return (
     <div className="flex flex-row items-center border py-2">
-      <p
-        className="ml-2 basis-8/12 cursor-pointer flex items-center"
+      <div
+        className="ml-2 basis-8/12 cursor-pointer flex flex-col"
         onClick={(): void => onSelect(page_id)}
       >
-        {title}
-        {is_public && (
-          <span className="ml-2 px-2 py-0.5 bg-green-500 text-white text-xs rounded-full">
-            Public
-          </span>
-        )}
-      </p>
+        <div className="flex items-center">
+          <p>{title}</p>
+          {is_public && !publicMode && (
+            <p className="ml-2 px-2 py-0.5 bg-green-500 text-white text-xs rounded-full">
+              Public
+            </p>
+          )}
+        </div>
+        <div className="text-xs text-gray-600">
+          {diaryPage.view_count} views
+        </div>
+      </div>
       <p className="basis-3/12 items-center flex justify-end text-sm text-gray-600">
         <TimeAgo date={new Date(updated_at)} />
       </p>

@@ -40,16 +40,16 @@ const PublicDiary = (): ReactElement => {
                   By {currentDiaryPage.username}
                 </p>
               </div>
-              <div className="flex flex-col pt-4">
-                <p className="text-xs text-slate-500 underline">
-                  Edited{'  '}
+              <div className="flex flex-col pt-2">
+                <p className="text-sm text-slate-500">
+                  Updated{'  '}
                   <TimeAgo
                     date={new Date(currentDiaryPage.updated_at)}
                     live={false}
                   />
                 </p>
                 <p className="text-xs text-slate-500">
-                  Viewed {currentDiaryPage.view_count} times.
+                  {currentDiaryPage.view_count} views
                 </p>
               </div>
             </div>
