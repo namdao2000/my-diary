@@ -1,2 +1,2 @@
-docker-compose up --remove-orphans --build -d
+docker-compose up --remove-orphans --build
 docker image prune -f
