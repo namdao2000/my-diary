@@ -36,7 +36,7 @@ const DiaryFeed = (): ReactElement => {
 
   const handleCreate = async (): Promise<void> => {
     const page_id = await createDiaryPage({
-      title: 'Diary Title...',
+      title: 'New Page Title',
       content: '',
     });
     navigate(`${ROUTES.diaryFeed}/${page_id}`);
