@@ -79,19 +79,12 @@ const Diary = (): ReactElement => {
         tempDiaryIsPublic !== currentDiaryPage.is_public
       ) {
         console.log('is it updated yet lmao', tempDiaryIsPublic);
-        updateDiaryPage(
-          {
-            page_id,
-            title: tempDiaryTitle,
-            content: tempDiaryContent,
-            is_public: tempDiaryIsPublic,
-          },
-          () => {
-            if (tempDiaryIsPublic) {
-              toast.success('Successfully published!');
-            }
-          },
-        );
+        updateDiaryPage({
+          page_id,
+          title: tempDiaryTitle,
+          content: tempDiaryContent,
+          is_public: tempDiaryIsPublic,
+        });
       }
     }
     setSaving(false);
@@ -111,34 +104,33 @@ const Diary = (): ReactElement => {
     <>
       {currentDiaryPage && (
         <>
-          <div className="flex justify-center sticky diary_header_container top-0 z-10 p-1">
+          <div className="flex justify-center sticky diary_header_container top-0 z-10 p-2">
             <div className="diary_header">
-              <div className="flex items-center">
+              <div className="flex items-end">
                 <input
                   className="text-xl cursor-pointer"
                   defaultValue={tempDiaryTitle}
                   onChange={handleTitleUpdate}
                 />
-                <p className="text-sm text-slate-500 ml-3">
-                  {isSaving && <>...saving</>}
-                </p>
+                {isSaving && (
+                  <p className="text-sm text-slate-500 ml-3">...saving</p>
+                )}
+                {!isSaving && (
+                  <p className="text-xs text-slate-500 underline">
+                    Last edit was{' '}
+                    <TimeAgo date={new Date(currentDiaryPage.updated_at)} />
+                  </p>
+                )}
               </div>
-              <div className="flex items-center">
-                <p className="text-xs text-slate-500 underline">
-                  Last edit was{' '}
-                  <TimeAgo date={new Date(currentDiaryPage.updated_at)} />
-                </p>
-
-                <button
-                  onClick={(): void => {
-                    setTempDiaryIsPublic(!tempDiaryIsPublic);
-                  }}
-                  className="bg-teal-500 hover:bg-teal-700 text-white font-bold text-sm py-1 px-2 rounded"
-                >
-                  {!tempDiaryIsPublic && 'Publish'}
-                  {tempDiaryIsPublic && 'Un-Publish'}
-                </button>
-              </div>
+              <button
+                onClick={(): void => {
+                  setTempDiaryIsPublic(!tempDiaryIsPublic);
+                }}
+                className="bg-teal-500 hover:bg-teal-700 text-white font-bold text-xs py-1 px-2 rounded"
+              >
+                {!tempDiaryIsPublic && 'Publish'}
+                {tempDiaryIsPublic && 'Un-Publish'}
+              </button>
             </div>
           </div>
           <ReactQuill
