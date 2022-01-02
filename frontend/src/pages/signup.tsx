@@ -2,14 +2,15 @@ import { ReactElement, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
 import { SignupArgs, useSignup } from '../services/auth/use-signup';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { ROUTES } from '../utils/routes';
+import { useDiary } from '../services/diary/use-diary';
 
 const Signup = (): ReactElement => {
   const { signup, loading } = useSignup();
   const navigate = useNavigate();
-  const location = useLocation();
+  const { createDiaryPage } = useDiary();
 
-  const from = (location as any)?.state?.from || '/';
   const {
     register,
     handleSubmit,
@@ -26,9 +27,13 @@ const Signup = (): ReactElement => {
       handleSubmit(async (signupArgs: SignupArgs) => {
         await signup({
           signupArgs: signupArgs,
-          onSuccess: () => {
+          onSuccess: async () => {
             toast.success('Singup Successful');
-            navigate(from, { replace: true });
+            const page_id = await createDiaryPage({
+              title: 'New Page Title',
+              content: '',
+            });
+            navigate(`${ROUTES.diaryFeed}/${page_id}`, { replace: true });
           },
         });
       }),
