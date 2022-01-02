@@ -27,8 +27,8 @@ export const requestWithJWT = async (
     }
     return await instance[method](url, data, config);
   } catch (e) {
-    if (axios.isAxiosError(e)) {
-      const { message, status } = (e as AxiosError).response?.data;
+    const { message, status } = (e as AxiosError).response?.data;
+    if (message && status) {
       toast.error(`${status}: ${message}`);
     } else {
       toast.error(
