@@ -9,6 +9,8 @@ The frontend is written in React, Apollo and Typescript.
 ## Backend 
 The backend of this application is implemented in Expressjs, Typescript and Sqlite3. It has built in JWT Authentication with Bcrypt password storage.
 
+Make sure you have an sqlite in ~/database/database.db
+
 ### Features 
 - WIP
 

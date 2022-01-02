@@ -9,12 +9,12 @@ import express from 'express';
 import helmet from 'helmet';
 import { logging } from './middleware/logging.middleware';
 import { BASE_URL } from './utils/constants';
-import { initialiseDatabase } from './helpers/database.helper';
 import { AuthRouter } from './routes/auth.routes';
 import { errorHandler } from './middleware/error-handler.middleware';
 import { resJsonInterceptor } from './middleware/res-json-interceptor.middleware';
 import { DiaryRouter } from './routes/diary.routes';
 import cors from 'cors';
+import { initialiseDatabase } from './helpers/database.helper';
 
 const app = express();
 
