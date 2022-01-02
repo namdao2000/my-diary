@@ -174,9 +174,9 @@ const Diary = (): ReactElement => {
                         </div>
 
                         <p className="mb-4">
-                          Is now accessible to anyone with that link. So what
-                          are you waiting for? The world needs to see what
-                          you&apos;ve just wrote ✍️
+                          This page is now accessible to anyone with that link.
+                          So what are you waiting for? The world needs to see
+                          what you&apos;ve just wrote ✍️
                         </p>
                         <button
                           className="bg-teal-500 hover:bg-teal-700 text-white font-bold text-sm py-1 px-2 rounded"
