@@ -6,6 +6,6 @@ services:
     volumes:
       - ~/database/database.db:/app/database.db
     ports:
-      - "8080:8080"
+      - "443:8080"
     restart: unless-stopped
     command: npm start
