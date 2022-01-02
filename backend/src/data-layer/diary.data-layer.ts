@@ -47,7 +47,7 @@ export const DiaryDataLayer = {
   getOneDiaryPage: async (page_id: string): Promise<DiaryPageSchema | undefined> => {
     const result = await (
       await DB
-    ).get<DiaryPageSchema>(SQL_STATEMENTS.getDiaryPage, [page_id]);
+    ).get<DiaryPageSchema>(SQL_STATEMENTS.getOneDiaryPage, [page_id]);
 
     if (result) {
       return {
@@ -76,13 +76,38 @@ export const DiaryDataLayer = {
     const result = await (await DB).get(SQL_STATEMENTS.getDiaryPagesCount, [username]);
     return result.count;
   },
+  getPublicDiaryPagesCount: async (): Promise<number> => {
+    const result = await (await DB).get(SQL_STATEMENTS.getPublicDiaryPagesCount);
+    return result.count;
+  },
   getPublicDiaryPages: async (
     limit: number,
     offset: number,
   ): Promise<DiaryPageSchema[]> => {
-    return await (
+    const result = await (
       await DB
     ).all<DiaryPageSchema[]>(SQL_STATEMENTS.getPublicDiaryPages, [limit, offset]);
+
+    return result.map((diary) => {
+      return {
+        ...diary,
+        is_public: Boolean(diary.is_public),
+      };
+    });
+  },
+  getOnePublicDiaryPage: async (
+    page_id: string,
+  ): Promise<DiaryPageSchema | undefined> => {
+    const result = await (
+      await DB
+    ).get<DiaryPageSchema>(SQL_STATEMENTS.getOnePublicDiaryPage, [page_id]);
+
+    if (result) {
+      return {
+        ...result,
+        is_public: Boolean(result.is_public),
+      };
+    }
   },
   incrementDiaryPageViewCount: async (page_id: string): Promise<void> => {
     await (await DB).run(SQL_STATEMENTS.incrementDiaryPageViewCount, [page_id]);

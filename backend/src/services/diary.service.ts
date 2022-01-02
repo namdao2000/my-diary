@@ -5,6 +5,15 @@ import {
   HttpError,
 } from './http-error-response.service';
 
+export interface GetPublicDiaryPagesArgs {
+  limit: number;
+  page: number;
+}
+
+export interface GetOnePublicDiaryPagesArgs {
+  page_id: string;
+}
+
 export interface DiaryPageContent {
   title: string;
   content: string;
@@ -20,7 +29,6 @@ export interface CreateDiaryPageArgs extends DiaryPageContent {
 }
 
 export interface GetDiaryPagesArgs {
-  is_public: boolean;
   username: string;
   limit: number;
   page: number;
@@ -35,31 +43,41 @@ export interface DeleteDiaryPageArgs extends DiaryPageOwnership {}
 export interface GetOneDiaryPageArgs extends DiaryPageOwnership {}
 
 export const DiaryService = {
+  getOnePublicDiaryPage: async (
+    args: GetOnePublicDiaryPagesArgs,
+  ): Promise<DiaryPageSchema> => {
+    const result = await DiaryDataLayer.getOnePublicDiaryPage(args.page_id);
+    if (!result) {
+      throw new HttpError(getHttpErrorResponse(ErrorCode.DIARY_PAGE_NON_EXISTENT));
+    }
+    await DiaryDataLayer.incrementDiaryPageViewCount(args.page_id);
+    return result;
+  },
+  getPublicDiaryPages: async (
+    args: GetPublicDiaryPagesArgs,
+  ): Promise<DiaryPageSchema[] | undefined> => {
+    const offset = (args.page - 1) * args.limit;
+    return await DiaryDataLayer.getPublicDiaryPages(args.limit, offset);
+  },
   getOneDiaryPage: async (args: GetOneDiaryPageArgs): Promise<DiaryPageSchema> => {
     const result = await DiaryDataLayer.getOneDiaryPage(args.page_id);
 
-    if (!result || (result.username !== args.username && !result.is_public)) {
+    if (!result || result.username !== args.username) {
       throw new HttpError(getHttpErrorResponse(ErrorCode.DIARY_PAGE_NON_EXISTENT));
     }
-
-    // This is a public page
-    if (result?.username !== args.username) {
-      await DiaryDataLayer.incrementDiaryPageViewCount(args.page_id);
-    }
-
     return result;
   },
   getDiaryPages: async (
     args: GetDiaryPagesArgs,
   ): Promise<DiaryPageSchema[] | undefined> => {
     const offset = (args.page - 1) * args.limit;
-    if (args.is_public) {
-      return await DiaryDataLayer.getPublicDiaryPages(args.limit, offset);
-    }
     return await DiaryDataLayer.getDiaryPages(args.username, args.limit, offset);
   },
   getDiaryPagesCount: async (username: string): Promise<number> => {
     return await DiaryDataLayer.getDiaryPagesCount(username);
+  },
+  getPublicDiaryPagesCount: async (): Promise<number> => {
+    return await DiaryDataLayer.getPublicDiaryPagesCount();
   },
   createDiaryPage: async (args: CreateDiaryPageArgs): Promise<string> => {
     return await DiaryDataLayer.createDiaryPage(args);

@@ -2,6 +2,42 @@ import { NextFunction, Request, Response } from 'express';
 import { DiaryService } from '../services/diary.service';
 
 export const DiaryController = {
+  getPublic: async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const { page_id } = req.params;
+
+      const result = await DiaryService.getOnePublicDiaryPage({ page_id });
+      res.status(200).json(result);
+      next();
+    } catch (e) {
+      next(e);
+    }
+  },
+  getAllPublic: async (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<void> => {
+    try {
+      const page = req.query.page ?? 1;
+      const limit = 15;
+      const count = await DiaryService.getPublicDiaryPagesCount();
+      const final_page = Math.ceil(count / limit);
+      const result = await DiaryService.getPublicDiaryPages({
+        limit,
+        page: parseInt(page as string),
+      });
+      res.status(200).json({
+        pages: result,
+        count,
+        limit,
+        final_page,
+      });
+      next();
+    } catch (e) {
+      next(e);
+    }
+  },
   get: async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const { username } = res.locals;
@@ -18,12 +54,10 @@ export const DiaryController = {
     try {
       const { username } = res.locals;
       const page = req.query.page ?? 1;
-      const is_public = !!req.query.is_public;
       const limit = 15;
       const count = await DiaryService.getDiaryPagesCount(username);
       const final_page = Math.ceil(count / limit);
       const result = await DiaryService.getDiaryPages({
-        is_public,
         username,
         limit,
         page: parseInt(page as string),

@@ -73,7 +73,7 @@ export const SQL_STATEMENTS = {
       FROM diary_page
       WHERE page_id = ?;
   `,
-  getDiaryPage: `
+  getOneDiaryPage: `
       SELECT page_id,
              username,
              title,
@@ -84,6 +84,18 @@ export const SQL_STATEMENTS = {
              datetime(updated_at, 'localtime') as updated_at
       FROM diary_page
       WHERE page_id = ?;
+  `,
+  getOnePublicDiaryPage: `
+        SELECT page_id,
+             username,
+             title,
+             content,
+             view_count,
+             is_public,
+             datetime(created_at, 'localtime') as created_at,
+             datetime(updated_at, 'localtime') as updated_at
+      FROM diary_page
+      WHERE page_id = ? AND is_public;
   `,
   getDiaryPages: `
       SELECT page_id,
@@ -103,6 +115,11 @@ export const SQL_STATEMENTS = {
       SELECT COUNT(*) as count
       FROM diary_page
       WHERE username = ?;
+  `,
+  getPublicDiaryPagesCount: `
+      SELECT COUNT(*) as count
+      FROM diary_page
+      WHERE is_public;
   `,
   getPublicDiaryPages: `
       SELECT page_id,
