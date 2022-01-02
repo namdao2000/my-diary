@@ -30,7 +30,7 @@ export const DiaryListItem = ({
       >
         {title}
         {is_public && (
-          <span className="ml-2 px-2 py-1 bg-green-500 hover:bg-green-600 text-white text-xs rounded-full">
+          <span className="ml-2 px-2 py-0.5 bg-green-500 text-white text-xs rounded-full">
             Public
           </span>
         )}
