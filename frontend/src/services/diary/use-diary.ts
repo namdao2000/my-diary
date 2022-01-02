@@ -11,6 +11,7 @@ export interface CreateDiaryPageArgs {
 
 export interface UpdateDiaryPageArgs extends CreateDiaryPageArgs {
   page_id: string;
+  is_public: boolean;
 }
 
 export interface SetDiaryPagesArgs {
@@ -22,9 +23,9 @@ export interface SetDiaryPagesArgs {
 
 export interface IUseDiaryReturn {
   loadOneDiaryPage: (page_id: string) => Promise<void>;
-  loadDiaryPages: (page: number) => Promise<void>;
+  loadDiaryPages: (page: number, is_public: boolean) => Promise<void>;
   createDiaryPage: (args: CreateDiaryPageArgs) => Promise<string>;
-  updateDiaryPage: (args: UpdateDiaryPageArgs) => void;
+  updateDiaryPage: (args: UpdateDiaryPageArgs, callback?: () => void) => void;
   deleteDiaryPage: (page_id: string, index: number) => void;
 }
 
@@ -38,21 +39,28 @@ export const useDiary = (): IUseDiaryReturn => {
     setCount,
     setLimitPerPage,
     currentDiaryPage,
+    setTempDiaryIsPublic,
+    setTempDiaryTitle,
+    setTempDiaryContent,
   } = useDiaryState();
 
   const loadOneDiaryPage = useCallback(
     async (page_id: string): Promise<void> => {
       const result = await requestWithJWT('get', `${APP_URL}/diary/${page_id}`);
+      const { content, title, is_public } = result?.data;
       setCurrentDiaryPage(result?.data);
+      setTempDiaryContent(content);
+      setTempDiaryTitle(title);
+      setTempDiaryIsPublic(is_public);
     },
     [requestWithJWT, setCurrentDiaryPage],
   );
 
   const loadDiaryPages = useCallback(
-    async (page: number): Promise<void> => {
+    async (page: number, is_public: boolean): Promise<void> => {
       const result = await requestWithJWT(
         'get',
-        `${APP_URL}/diary?page=${page}`,
+        `${APP_URL}/diary?page=${page}${is_public && '&is_public=true'}`,
       );
       const { pages, final_page, count, limit } = result?.data;
       setDiaryPages(pages);
@@ -72,23 +80,29 @@ export const useDiary = (): IUseDiaryReturn => {
   );
 
   const updateDiaryPage = useCallback(
-    async (args: UpdateDiaryPageArgs): Promise<void> => {
-      const { page_id, title, content } = args;
+    async (args: UpdateDiaryPageArgs, callback?: () => void): Promise<void> => {
+      const { page_id, title, content, is_public } = args;
       await requestWithJWT('put', `${APP_URL}/diary/${page_id}`, {
         title,
         content,
+        is_public,
       });
-      const newDiaryPage: DiaryPage = {
-        page_id,
-        username: currentDiaryPage?.username as string,
-        title,
-        content,
-        updated_at: new Date(),
-        created_at: currentDiaryPage?.created_at as Date,
-      };
-      setCurrentDiaryPage(newDiaryPage);
+      if (currentDiaryPage) {
+        const newDiaryPage: DiaryPage = {
+          ...currentDiaryPage,
+          page_id,
+          title,
+          content,
+          is_public,
+          updated_at: new Date(),
+        };
+        setCurrentDiaryPage(newDiaryPage);
+      }
+      if (callback) {
+        callback();
+      }
     },
-    [requestWithJWT],
+    [requestWithJWT, setCurrentDiaryPage, currentDiaryPage],
   );
 
   const deleteDiaryPage = useCallback(

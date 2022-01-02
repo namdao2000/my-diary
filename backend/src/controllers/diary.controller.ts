@@ -18,10 +18,12 @@ export const DiaryController = {
     try {
       const { username } = res.locals;
       const page = req.query.page ?? 1;
+      const is_public = !!req.query.is_public;
       const limit = 15;
       const count = await DiaryService.getDiaryPagesCount(username);
       const final_page = Math.ceil(count / limit);
       const result = await DiaryService.getDiaryPages({
+        is_public,
         username,
         limit,
         page: parseInt(page as string),
@@ -53,10 +55,16 @@ export const DiaryController = {
   },
   update: async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const { username } = res.locals;
-    const { content, title } = req.body;
+    const { content, title, is_public } = req.body;
     const { page_id } = req.params;
     try {
-      await DiaryService.updateDiaryPage({ username, title, content, page_id });
+      await DiaryService.updateDiaryPage({
+        username,
+        title,
+        content,
+        page_id,
+        is_public: Boolean(is_public),
+      });
       res.status(200).json({
         message: 'Successfully updated the diary page',
       });

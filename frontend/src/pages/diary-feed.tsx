@@ -16,7 +16,7 @@ const DiaryFeed = (): ReactElement => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    loadDiaryPages(pageNumber);
+    loadDiaryPages(pageNumber, false);
   }, [pageNumber]);
 
   const handleNavigate = (page: number): void => {

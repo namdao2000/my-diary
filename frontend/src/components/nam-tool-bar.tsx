@@ -14,7 +14,7 @@ export const NamToolBar = (): ReactElement => {
   };
 
   const getDiary = async (): Promise<void> => {
-    console.log(await loadDiaryPages(1));
+    console.log(await loadDiaryPages(1, true));
   };
 
   return (

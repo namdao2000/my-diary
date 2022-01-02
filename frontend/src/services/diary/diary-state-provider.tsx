@@ -16,6 +16,7 @@ interface IDiaryContext {
   currentDiaryPage?: DiaryPage;
   tempDiaryContent: string;
   tempDiaryTitle: string;
+  tempDiaryIsPublic: boolean;
   setDiaryPages: (diaryPages: DiaryPage[]) => void;
   setCount: (count: number) => void;
   setLimitPerPage: (limit: number) => void;
@@ -23,12 +24,14 @@ interface IDiaryContext {
   setCurrentDiaryPage: (diaryPage: DiaryPage) => void;
   setTempDiaryContent: (content: string) => void;
   setTempDiaryTitle: (title: string) => void;
+  setTempDiaryIsPublic: (isPublic: boolean) => void;
 }
 
 export const DiaryStateContext = createContext<IDiaryContext>({
   diaryPages: [],
   tempDiaryTitle: '',
   tempDiaryContent: '',
+  tempDiaryIsPublic: false,
   setDiaryPages: (diaryPages: DiaryPage[]) => {
     throw new Error('DiaryProvider is required');
   },
@@ -50,6 +53,9 @@ export const DiaryStateContext = createContext<IDiaryContext>({
   setTempDiaryTitle: (title: string) => {
     throw new Error('DiaryProvider is required');
   },
+  setTempDiaryIsPublic: (isPublic: boolean) => {
+    throw new Error('DiaryProvider is required');
+  },
 });
 
 export const useDiaryState = (): IDiaryContext => useContext(DiaryStateContext);
@@ -68,12 +74,7 @@ export const DiaryStateProvider = ({
   const [finalPage, setFinalPage] = useState<number | undefined>();
   const [tempDiaryTitle, setTempDiaryTitle] = useState<string>('');
   const [tempDiaryContent, setTempDiaryContent] = useState<string>('');
-
-  const setCurrentDiaryPageWrapper = (diaryPage: DiaryPage): void => {
-    setCurrentDiaryPage(diaryPage);
-    setTempDiaryContent(diaryPage.content);
-    setTempDiaryTitle(diaryPage.title);
-  };
+  const [tempDiaryIsPublic, setTempDiaryIsPublic] = useState<boolean>(false);
 
   return (
     <DiaryStateContext.Provider
@@ -85,13 +86,15 @@ export const DiaryStateProvider = ({
         currentDiaryPage,
         tempDiaryContent,
         tempDiaryTitle,
-        setCurrentDiaryPage: setCurrentDiaryPageWrapper,
+        tempDiaryIsPublic,
+        setCurrentDiaryPage,
         setCount,
         setLimitPerPage,
         setFinalPage,
         setDiaryPages,
         setTempDiaryTitle,
         setTempDiaryContent,
+        setTempDiaryIsPublic,
       }}
     >
       {children}

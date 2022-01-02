@@ -13,6 +13,7 @@ import { ROUTES } from '../utils/routes';
 import ReactQuill from 'react-quill';
 import '../styles/react-quill.style.css';
 import TimeAgo from 'react-timeago';
+import { toast } from 'react-hot-toast';
 
 const Diary = (): ReactElement => {
   const { page_id } = useParams();
@@ -20,8 +21,10 @@ const Diary = (): ReactElement => {
     currentDiaryPage,
     tempDiaryTitle,
     tempDiaryContent,
+    tempDiaryIsPublic,
     setTempDiaryContent,
     setTempDiaryTitle,
+    setTempDiaryIsPublic,
   } = useDiaryState();
   const { loadOneDiaryPage, updateDiaryPage } = useDiary();
   const [isLoading, setLoading] = useState(true);
@@ -49,26 +52,6 @@ const Diary = (): ReactElement => {
     }
   });
 
-  useDebounce(
-    () => {
-      if (currentDiaryPage && page_id && (tempDiaryTitle || tempDiaryContent)) {
-        if (
-          currentDiaryPage.content !== tempDiaryContent ||
-          tempDiaryTitle !== currentDiaryPage.title
-        ) {
-          updateDiaryPage({
-            page_id,
-            title: tempDiaryTitle,
-            content: tempDiaryContent,
-          });
-        }
-      }
-      setSaving(false);
-    },
-    2000,
-    [tempDiaryContent, tempDiaryTitle],
-  );
-
   useEffect(() => {
     if (
       currentDiaryPage?.content !== tempDiaryContent ||
@@ -85,6 +68,41 @@ const Diary = (): ReactElement => {
       setTempDiaryTitle(event.target.value);
     },
     [setTempDiaryTitle],
+  );
+
+  // TODO: useCallback
+  const handleUpdateDiary = (): void => {
+    if (currentDiaryPage && page_id && (tempDiaryTitle || tempDiaryContent)) {
+      if (
+        tempDiaryContent !== currentDiaryPage.content ||
+        tempDiaryTitle !== currentDiaryPage.title ||
+        tempDiaryIsPublic !== currentDiaryPage.is_public
+      ) {
+        console.log('is it updated yet lmao', tempDiaryIsPublic);
+        updateDiaryPage(
+          {
+            page_id,
+            title: tempDiaryTitle,
+            content: tempDiaryContent,
+            is_public: tempDiaryIsPublic,
+          },
+          () => {
+            if (tempDiaryIsPublic) {
+              toast.success('Successfully published!');
+            }
+          },
+        );
+      }
+    }
+    setSaving(false);
+  };
+
+  useDebounce(
+    () => {
+      handleUpdateDiary();
+    },
+    2000,
+    [tempDiaryContent, tempDiaryTitle, tempDiaryIsPublic],
   );
 
   if (isLoading) return <>Loading...</>;
@@ -105,10 +123,22 @@ const Diary = (): ReactElement => {
                   {isSaving && <>...saving</>}
                 </p>
               </div>
-              <p className="text-sm text-slate-500 underline">
-                Last edit was{' '}
-                <TimeAgo date={new Date(currentDiaryPage.updated_at)} />
-              </p>
+              <div className="flex items-center">
+                <p className="text-xs text-slate-500 underline">
+                  Last edit was{' '}
+                  <TimeAgo date={new Date(currentDiaryPage.updated_at)} />
+                </p>
+
+                <button
+                  onClick={(): void => {
+                    setTempDiaryIsPublic(!tempDiaryIsPublic);
+                  }}
+                  className="bg-teal-500 hover:bg-teal-700 text-white font-bold text-sm py-1 px-2 rounded"
+                >
+                  {!tempDiaryIsPublic && 'Publish'}
+                  {tempDiaryIsPublic && 'Un-Publish'}
+                </button>
+              </div>
             </div>
           </div>
           <ReactQuill
