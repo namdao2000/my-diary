@@ -81,22 +81,23 @@ export const SQL_STATEMENTS = {
              content,
              view_count,
              is_public,
-             datetime(created_at, 'localtime') as created_at,
-             datetime(updated_at, 'localtime') as updated_at
+             created_at,
+             updated_at
       FROM diary_page
       WHERE page_id = ?;
   `,
   getOnePublicDiaryPage: `
-        SELECT page_id,
+      SELECT page_id,
              username,
              title,
              content,
              view_count,
              is_public,
-             datetime(created_at, 'localtime') as created_at,
-             datetime(updated_at, 'localtime') as updated_at
+             created_at,
+             updated_at
       FROM diary_page
-      WHERE page_id = ? AND is_public;
+      WHERE page_id = ?
+        AND is_public;
   `,
   getDiaryPages: `
       SELECT page_id,
@@ -105,8 +106,8 @@ export const SQL_STATEMENTS = {
              content,
              view_count,
              is_public,
-             datetime(created_at, 'localtime') as created_at,
-             datetime(updated_at, 'localtime') as updated_at
+             created_at,
+             updated_at
       FROM diary_page
       WHERE username = ?
       ORDER BY updated_at DESC
@@ -129,8 +130,8 @@ export const SQL_STATEMENTS = {
              content,
              view_count,
              is_public,
-             datetime(created_at, 'localtime') as created_at,
-             datetime(updated_at, 'localtime') as updated_at
+             created_at,
+             updated_at
       FROM diary_page
       WHERE is_public = TRUE
       ORDER BY view_count DESC, created_at DESC

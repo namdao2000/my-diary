@@ -47,28 +47,30 @@ export const DiaryListItem = ({
       <p className="basis-3/12 items-center flex justify-end text-sm text-gray-600">
         <TimeAgo date={new Date(updated_at)} />
       </p>
-      <div className="basis-1/12 select-none text-slate-400 flex justify-end pr-5">
-        {!confirmDeleteState && (
-          <span
-            className="cursor-pointer font-xl"
-            onClick={(): void => setConfirmDeleteState(true)}
-          >
-            &#xd7;
-          </span>
-        )}
-        {confirmDeleteState && (
-          <ClickAwayListener
-            onClickAway={(): void => setConfirmDeleteState(false)}
-          >
-            <button
-              className="text-xs px-2 py-1 leading-none border rounded border-slate-400 hover:border-transparent hover:text-white hover:bg-slate-400"
-              onClick={onConfirmDelete}
+      {!publicMode && (
+        <div className="basis-1/12 select-none text-slate-400 flex justify-end pr-5">
+          {!confirmDeleteState && (
+            <span
+              className="cursor-pointer font-xl"
+              onClick={(): void => setConfirmDeleteState(true)}
             >
-              Confirm
-            </button>
-          </ClickAwayListener>
-        )}
-      </div>
+              &#xd7;
+            </span>
+          )}
+          {confirmDeleteState && (
+            <ClickAwayListener
+              onClickAway={(): void => setConfirmDeleteState(false)}
+            >
+              <button
+                className="text-xs px-2 py-1 leading-none border rounded border-slate-400 hover:border-transparent hover:text-white hover:bg-slate-400 ml-2"
+                onClick={onConfirmDelete}
+              >
+                Confirm
+              </button>
+            </ClickAwayListener>
+          )}
+        </div>
+      )}
     </div>
   );
 };

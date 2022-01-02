@@ -52,6 +52,8 @@ export const DiaryDataLayer = {
     if (result) {
       return {
         ...result,
+        updated_at: result.updated_at + ' UTC',
+        created_at: result.created_at + ' UTC',
         is_public: Boolean(result.is_public),
       };
     }
@@ -68,6 +70,8 @@ export const DiaryDataLayer = {
     return result.map((diary) => {
       return {
         ...diary,
+        updated_at: diary.updated_at + ' UTC',
+        created_at: diary.created_at + ' UTC',
         is_public: Boolean(diary.is_public),
       };
     });
@@ -91,6 +95,8 @@ export const DiaryDataLayer = {
     return result.map((diary) => {
       return {
         ...diary,
+        updated_at: diary.updated_at + ' UTC',
+        created_at: diary.created_at + ' UTC',
         is_public: Boolean(diary.is_public),
       };
     });
@@ -105,6 +111,8 @@ export const DiaryDataLayer = {
     if (result) {
       return {
         ...result,
+        updated_at: result.updated_at + ' UTC',
+        created_at: result.created_at + ' UTC',
         is_public: Boolean(result.is_public),
       };
     }

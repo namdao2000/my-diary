@@ -18,7 +18,6 @@ import { toast } from 'react-hot-toast';
 
 const Diary = (): ReactElement => {
   const { page_id } = useParams();
-  const location = useLocation();
   const {
     currentDiaryPage,
     tempDiaryTitle,
