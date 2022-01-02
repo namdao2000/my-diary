@@ -40,3 +40,21 @@
     border: none;
     box-shadow: 0 3px 3px -2px rgba(0, 0, 5, .5);
 }
+
+@media (min-width: 1024px) {
+    .quill.container {
+        max-width: none;
+    }
+}
+
+@media (min-width: 768px) {
+    .quill.container {
+        max-width: none;
+    }
+}
+
+@media (min-width: 640px) {
+    .quill.container {
+        max-width: none;
+    }
+}

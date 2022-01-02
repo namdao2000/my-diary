@@ -51,7 +51,7 @@ const Diary = (): ReactElement => {
 
   useDebounce(
     () => {
-      if (currentDiaryPage && page_id && tempDiaryTitle && tempDiaryContent) {
+      if (currentDiaryPage && page_id && (tempDiaryTitle || tempDiaryContent)) {
         if (
           currentDiaryPage.content !== tempDiaryContent ||
           tempDiaryTitle !== currentDiaryPage.title
@@ -65,7 +65,7 @@ const Diary = (): ReactElement => {
       }
       setSaving(false);
     },
-    5000,
+    2000,
     [tempDiaryContent, tempDiaryTitle],
   );
 

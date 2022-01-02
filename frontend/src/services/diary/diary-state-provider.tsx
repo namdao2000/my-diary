@@ -14,8 +14,8 @@ interface IDiaryContext {
   limitPerPage?: number;
   finalPage?: number;
   currentDiaryPage?: DiaryPage;
-  tempDiaryContent?: string;
-  tempDiaryTitle?: string;
+  tempDiaryContent: string;
+  tempDiaryTitle: string;
   setDiaryPages: (diaryPages: DiaryPage[]) => void;
   setCount: (count: number) => void;
   setLimitPerPage: (limit: number) => void;
@@ -27,6 +27,8 @@ interface IDiaryContext {
 
 export const DiaryStateContext = createContext<IDiaryContext>({
   diaryPages: [],
+  tempDiaryTitle: '',
+  tempDiaryContent: '',
   setDiaryPages: (diaryPages: DiaryPage[]) => {
     throw new Error('DiaryProvider is required');
   },
@@ -64,10 +66,8 @@ export const DiaryStateProvider = ({
   const [count, setCount] = useState<number | undefined>();
   const [limitPerPage, setLimitPerPage] = useState<number | undefined>();
   const [finalPage, setFinalPage] = useState<number | undefined>();
-  const [tempDiaryTitle, setTempDiaryTitle] = useState<string | undefined>();
-  const [tempDiaryContent, setTempDiaryContent] = useState<
-    string | undefined
-  >();
+  const [tempDiaryTitle, setTempDiaryTitle] = useState<string>('');
+  const [tempDiaryContent, setTempDiaryContent] = useState<string>('');
 
   const setCurrentDiaryPageWrapper = (diaryPage: DiaryPage): void => {
     setCurrentDiaryPage(diaryPage);
