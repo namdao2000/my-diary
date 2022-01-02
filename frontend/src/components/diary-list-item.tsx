@@ -14,12 +14,13 @@ export const DiaryListItem = ({
   index: number;
   publicMode: boolean;
   onSelect: (page_id: string) => void;
-  onDelete: (page_id: string, index: number) => void;
+  onDelete?: (page_id: string, index: number) => void;
 }): ReactElement => {
   const { page_id, title, updated_at, is_public } = diaryPage;
   const [confirmDeleteState, setConfirmDeleteState] = useState(false);
 
   const onConfirmDelete = (): void => {
+    if (!onDelete) return;
     onDelete(page_id, index);
     setConfirmDeleteState(false);
   };
@@ -30,7 +31,7 @@ export const DiaryListItem = ({
         className="ml-2 basis-8/12 cursor-pointer flex flex-col"
         onClick={(): void => onSelect(page_id)}
       >
-        <div className="flex items-center">
+        <div className="font-semibold flex items-center">
           <p>{title}</p>
           {is_public && !publicMode && (
             <p className="ml-2 px-2 py-0.5 bg-green-500 text-white text-xs rounded-full">
@@ -39,7 +40,8 @@ export const DiaryListItem = ({
           )}
         </div>
         <div className="text-xs text-gray-600">
-          {diaryPage.view_count} views
+          <p> By {diaryPage.username}</p>
+          <p> {diaryPage.view_count} views</p>
         </div>
       </div>
       <p className="basis-3/12 items-center flex justify-end text-sm text-gray-600">

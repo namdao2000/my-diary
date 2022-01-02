@@ -15,6 +15,7 @@ const Home = lazy(() => import('./home'));
 const DiaryFeed = lazy(() => import('./diary-feed'));
 const Diary = lazy(() => import('./diary'));
 const PublicDiary = lazy(() => import('./public-diary'));
+const PublicDiaryFeed = lazy(() => import('./public-diary-feed'));
 
 export const Pages = (): ReactElement => {
   return (
@@ -50,7 +51,15 @@ export const Pages = (): ReactElement => {
               }
             />
             <Route
-              path={ROUTES.diary}
+              path={ROUTES.publicDiaryFeed}
+              element={
+                <React.Suspense fallback={<>...</>}>
+                  <PublicDiaryFeed />
+                </React.Suspense>
+              }
+            />
+            <Route
+              path={ROUTES.diaryPage}
               element={
                 <AuthGuard>
                   <React.Suspense fallback={<>...</>}>
@@ -60,7 +69,7 @@ export const Pages = (): ReactElement => {
               }
             />
             <Route
-              path={ROUTES.publicDiary}
+              path={ROUTES.publicDiaryPage}
               element={
                 <React.Suspense fallback={<>...</>}>
                   <PublicDiary />
