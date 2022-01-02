@@ -13,7 +13,6 @@ import { ROUTES } from '../utils/routes';
 import ReactQuill from 'react-quill';
 import '../styles/react-quill.style.css';
 import TimeAgo from 'react-timeago';
-import { toast } from 'react-hot-toast';
 
 const Diary = (): ReactElement => {
   const { page_id } = useParams();
@@ -44,7 +43,7 @@ const Diary = (): ReactElement => {
 
   useEffectOnce(() => {
     if (page_id) {
-      loadOneDiaryPage(page_id).then(() => {
+      loadOneDiaryPage(page_id, false).then(() => {
         setLoading(false);
       });
     } else {
@@ -55,13 +54,14 @@ const Diary = (): ReactElement => {
   useEffect(() => {
     if (
       currentDiaryPage?.content !== tempDiaryContent ||
-      currentDiaryPage?.title !== tempDiaryTitle
+      currentDiaryPage?.title !== tempDiaryTitle ||
+      currentDiaryPage?.is_public !== tempDiaryIsPublic
     ) {
       setSaving(true);
     } else {
       setSaving(false);
     }
-  }, [tempDiaryContent, tempDiaryTitle]);
+  }, [tempDiaryContent, tempDiaryTitle, tempDiaryIsPublic]);
 
   const handleTitleUpdate = useCallback(
     (event: ChangeEvent<HTMLInputElement>) => {
@@ -78,7 +78,6 @@ const Diary = (): ReactElement => {
         tempDiaryTitle !== currentDiaryPage.title ||
         tempDiaryIsPublic !== currentDiaryPage.is_public
       ) {
-        console.log('is it updated yet lmao', tempDiaryIsPublic);
         updateDiaryPage({
           page_id,
           title: tempDiaryTitle,
@@ -106,7 +105,7 @@ const Diary = (): ReactElement => {
         <>
           <div className="flex justify-center sticky diary_header_container top-0 z-10 p-2">
             <div className="diary_header">
-              <div className="flex items-end">
+              <div className="flex flex-col">
                 <input
                   className="text-xl cursor-pointer"
                   defaultValue={tempDiaryTitle}
@@ -116,8 +115,8 @@ const Diary = (): ReactElement => {
                   <p className="text-sm text-slate-500 ml-3">...saving</p>
                 )}
                 {!isSaving && (
-                  <p className="text-xs text-slate-500 underline">
-                    Last edit was{' '}
+                  <p className="text-xs text-slate-500">
+                    Edited{' '}
                     <TimeAgo date={new Date(currentDiaryPage.updated_at)} />
                   </p>
                 )}

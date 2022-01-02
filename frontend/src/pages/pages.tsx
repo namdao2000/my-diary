@@ -14,6 +14,7 @@ import { PageLayout } from '../components/page-layout';
 const Home = lazy(() => import('./home'));
 const DiaryFeed = lazy(() => import('./diary-feed'));
 const Diary = lazy(() => import('./diary'));
+const PublicDiary = lazy(() => import('./public-diary'));
 
 export const Pages = (): ReactElement => {
   return (
@@ -56,6 +57,14 @@ export const Pages = (): ReactElement => {
                     <Diary />
                   </React.Suspense>
                 </AuthGuard>
+              }
+            />
+            <Route
+              path={ROUTES.publicDiary}
+              element={
+                <React.Suspense fallback={<>...</>}>
+                  <PublicDiary />
+                </React.Suspense>
               }
             />
           </Routes>

@@ -22,8 +22,8 @@ export interface SetDiaryPagesArgs {
 }
 
 export interface IUseDiaryReturn {
-  loadOneDiaryPage: (page_id: string) => Promise<void>;
-  loadDiaryPages: (page: number, is_public: boolean) => Promise<void>;
+  loadOneDiaryPage: (page_id: string, isPublic: boolean) => Promise<void>;
+  loadDiaryPages: (page: number, isPublic: boolean) => Promise<void>;
   createDiaryPage: (args: CreateDiaryPageArgs) => Promise<string>;
   updateDiaryPage: (args: UpdateDiaryPageArgs, callback?: () => void) => void;
   deleteDiaryPage: (page_id: string, index: number) => void;
@@ -45,8 +45,12 @@ export const useDiary = (): IUseDiaryReturn => {
   } = useDiaryState();
 
   const loadOneDiaryPage = useCallback(
-    async (page_id: string): Promise<void> => {
-      const result = await requestWithJWT('get', `${APP_URL}/diary/${page_id}`);
+    async (page_id: string, isPublic: boolean): Promise<void> => {
+      const publicRoute = isPublic ? '/public' : '';
+      const result = await requestWithJWT(
+        'get',
+        `${APP_URL}${publicRoute}/diary/${page_id}`,
+      );
       const { content, title, is_public } = result?.data;
       setCurrentDiaryPage(result?.data);
       setTempDiaryContent(content);
@@ -57,10 +61,11 @@ export const useDiary = (): IUseDiaryReturn => {
   );
 
   const loadDiaryPages = useCallback(
-    async (page: number, is_public: boolean): Promise<void> => {
+    async (page: number, isPublic: boolean): Promise<void> => {
+      const publicRoute = isPublic ? '/public' : '';
       const result = await requestWithJWT(
         'get',
-        `${APP_URL}/diary?page=${page}${is_public && '&is_public=true'}`,
+        `${APP_URL}${publicRoute}/diary?page=${page}`,
       );
       const { pages, final_page, count, limit } = result?.data;
       setDiaryPages(pages);

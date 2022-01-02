@@ -8,7 +8,7 @@ export const PageLayout = ({
 }): ReactElement => {
   const location = useLocation();
   const path = location.pathname.slice(0, location.pathname.lastIndexOf('/'));
-  if (path === '/diary') {
+  if (path === '/diary' || path === '/public/diary') {
     return <div className="diary_page_background">{children}</div>;
   }
 

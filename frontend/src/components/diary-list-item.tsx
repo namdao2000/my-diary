@@ -14,7 +14,7 @@ export const DiaryListItem = ({
   onSelect: (page_id: string) => void;
   onDelete: (page_id: string, index: number) => void;
 }): ReactElement => {
-  const { page_id, title, updated_at } = diaryPage;
+  const { page_id, title, updated_at, is_public } = diaryPage;
   const [confirmDeleteState, setConfirmDeleteState] = useState(false);
 
   const onConfirmDelete = (): void => {
@@ -25,10 +25,15 @@ export const DiaryListItem = ({
   return (
     <div className="flex flex-row items-center border py-2">
       <p
-        className="ml-2 basis-8/12 cursor-pointer"
+        className="ml-2 basis-8/12 cursor-pointer flex items-center"
         onClick={(): void => onSelect(page_id)}
       >
         {title}
+        {is_public && (
+          <span className="ml-2 px-2 py-1 bg-green-500 hover:bg-green-600 text-white text-xs rounded-full">
+            Public
+          </span>
+        )}
       </p>
       <p className="basis-3/12 items-center flex justify-end text-sm text-gray-600">
         <TimeAgo date={new Date(updated_at)} />

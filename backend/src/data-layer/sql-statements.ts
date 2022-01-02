@@ -27,6 +27,7 @@ export const SQL_STATEMENTS = {
       CREATE TRIGGER IF NOT EXISTS diary_page_auto_updated_at
           AFTER UPDATE
           ON diary_page
+          WHEN NEW.view_count = OLD.view_count
       BEGIN
           UPDATE diary_page SET updated_at = CURRENT_TIMESTAMP WHERE page_id = NEW.page_id;
       END;
