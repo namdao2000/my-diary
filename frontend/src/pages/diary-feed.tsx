@@ -58,7 +58,7 @@ const DiaryFeed = (): ReactElement => {
     <>
       <div>
         <div className="flex justify-between mb-2">
-          <p className="font-bold h-full">Diary Entries</p>
+          <p className="font-bold h-full">My Diary Entries</p>
           <button
             onClick={handleCreate}
             className="bg-teal-500 hover:bg-teal-700 text-white font-bold text-sm py-1 px-2 rounded"
