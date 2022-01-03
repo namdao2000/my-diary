@@ -12,7 +12,7 @@ The backend of this application is implemented in Expressjs, Typescript and Sqli
 Make sure you have an sqlite in ~/database/database.db
 
 ### Features 
-- WIP
+- Database backup
 
 #### Authentication
 - In-house JWT Authentication (powered by jsonwebtoken)
