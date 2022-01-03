@@ -4,6 +4,7 @@ import { toast } from 'react-hot-toast';
 import { useForm } from 'react-hook-form';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { ROUTES } from '../utils/routes';
+import clsx from 'clsx';
 
 const Login = (): ReactElement => {
   const { login, loading } = useLogin();
@@ -75,8 +76,12 @@ const Login = (): ReactElement => {
           </Link>
         </p>
         <button
-          className="bg-teal-500 hover:bg-teal-700 text-white font-bold py-3 px-4 rounded w-full"
+          className={clsx(
+            'bg-teal-500 hover:bg-teal-700 text-white font-bold py-3 px-4 rounded w-full',
+            { 'animate-pulse': loading },
+          )}
           type="submit"
+          disabled={loading}
         >
           Login
         </button>

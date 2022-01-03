@@ -5,6 +5,7 @@ import { SignupArgs, useSignup } from '../services/auth/use-signup';
 import { useNavigate } from 'react-router-dom';
 import { ROUTES } from '../utils/routes';
 import { useDiary } from '../services/diary/use-diary';
+import clsx from 'clsx';
 
 const Signup = (): ReactElement => {
   const { signup, loading } = useSignup();
@@ -131,8 +132,12 @@ const Signup = (): ReactElement => {
           </div>
         </div>
         <button
-          className="bg-teal-500 hover:bg-teal-700 text-white font-bold py-3 px-4 rounded w-full"
+          className={clsx(
+            'bg-teal-500 hover:bg-teal-700 text-white font-bold py-3 px-4 rounded w-full',
+            { 'animate-pulse': loading },
+          )}
           type="submit"
+          disabled={loading}
         >
           Signup
         </button>
