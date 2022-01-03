@@ -1,4 +1,4 @@
-import { MouseEventHandler, ReactElement, ReactNode } from 'react';
+import { ReactElement, ReactNode } from 'react';
 import clsx from 'clsx';
 
 export type ModalPosition = 'top' | 'center';

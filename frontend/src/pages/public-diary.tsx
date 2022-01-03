@@ -7,13 +7,13 @@ import ReactQuill from 'react-quill';
 import { ROUTES } from '../utils/routes';
 import '../styles/react-quill.style.css';
 import { DiaryPage } from '../types/diary-page';
+import { PlaceHolderLoading } from '../components/place-holder-loading';
 
 const PublicDiary = (): ReactElement => {
   const { page_id } = useParams();
   const { getOneDiaryPage } = useDiary();
   const navigate = useNavigate();
-  const [diaryPage, setDiaryPage] = useState<DiaryPage>(null!);
-  const [isLoading, setLoading] = useState(true);
+  const [diaryPage, setDiaryPage] = useState<DiaryPage>();
 
   useEffectOnce(() => {
     if (page_id) {
@@ -22,40 +22,60 @@ const PublicDiary = (): ReactElement => {
           navigate(ROUTES.page404);
         }
         setDiaryPage(diary);
-        setLoading(false);
       });
     }
   });
 
-  if (isLoading || !diaryPage) return <>Loading...</>;
-
   return (
-    <>
+    <div className="diary_page_background">
       <div className="flex justify-center sticky diary_header_container top-0 z-10 p-2">
         <div className="diary_header">
           <div className="flex flex-col">
-            <p className="text-xl">{diaryPage.title}</p>
-            <p className="text-sm text-slate-500"> By {diaryPage.username}</p>
+            {!diaryPage && (
+              <div className="pt-4">
+                <PlaceHolderLoading className="h-2 w-60 mb-2" />
+                <PlaceHolderLoading className="h-2 w-32" />
+              </div>
+            )}
+            {diaryPage && (
+              <>
+                <p className="text-xl">{diaryPage.title}</p>
+                <p className="text-sm text-slate-500">
+                  {' '}
+                  By {diaryPage.username}
+                </p>
+              </>
+            )}
           </div>
           <div className="flex flex-col pt-2">
-            <p className="text-sm text-slate-500">
-              Updated{'  '}
-              <TimeAgo date={new Date(diaryPage.updated_at)} live={false} />
-            </p>
-            <p className="text-xs text-slate-500">
-              {diaryPage.view_count} views
-            </p>
+            {!diaryPage && (
+              <div className="pt-2 w-32">
+                <PlaceHolderLoading className="h-2 mb-2" />
+                <PlaceHolderLoading className="h-2 w-1/2" />
+              </div>
+            )}
+            {diaryPage && (
+              <>
+                <p className="text-sm text-slate-500">
+                  Updated{'  '}
+                  <TimeAgo date={new Date(diaryPage.updated_at)} live={false} />
+                </p>
+                <p className="text-xs text-slate-500">
+                  {diaryPage.view_count} views
+                </p>
+              </>
+            )}
           </div>
         </div>
       </div>
       <ReactQuill
         className="container"
         theme="snow"
-        value={diaryPage.content}
+        value={diaryPage?.content}
         modules={{ toolbar: [] }}
         readOnly
       />
-    </>
+    </div>
   );
 };
 

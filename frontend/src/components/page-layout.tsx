@@ -9,7 +9,7 @@ export const PageLayout = ({
   const location = useLocation();
   const path = location.pathname.slice(0, location.pathname.lastIndexOf('/'));
   if (path === '/diary' || path === '/public/diary') {
-    return <div className="diary_page_background">{children}</div>;
+    return <>{children}</>;
   }
 
   return <div className="pt-4 px-6 md:px-16 lg:px-32 h-full">{children}</div>;
