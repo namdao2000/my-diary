@@ -1,22 +1,35 @@
-import { ReactElement, useEffect, useMemo } from 'react';
+import { ReactElement, useEffect, useMemo, useState } from 'react';
 import { useEffectOnce } from 'react-use';
 import { useDiary } from '../services/diary/use-diary';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { ROUTES } from '../utils/routes';
 import { DiaryListItem } from '../components/diary-list-item';
 import { Pagination } from '../components/pagination';
-import { useDiaryState } from '../services/diary/diary-state-provider';
+import { DiaryPage } from '../types/diary-page';
 
 const DiaryFeed = (): ReactElement => {
-  const { diaryPages, count, limitPerPage, finalPage } = useDiaryState();
-  const { loadDiaryPages, deleteDiaryPage, createDiaryPage } = useDiary();
+  const [isLoading, setLoading] = useState(true);
+  const [diaryPages, setDiaryPages] = useState<DiaryPage[]>([]);
+  const [count, setCount] = useState<number | undefined>();
+  const [limitPerPage, setLimitPerPage] = useState<number | undefined>();
+  const [finalPage, setFinalPage] = useState<number | undefined>();
+
+  const { getDiaryPages, deleteDiaryPage, createDiaryPage } = useDiary();
   const [searchParams] = useSearchParams();
   const pageParam = searchParams.get('page');
   const pageNumber = pageParam ? parseInt(pageParam) : 1;
   const navigate = useNavigate();
 
   useEffect(() => {
-    loadDiaryPages(pageNumber, false);
+    setLoading(true);
+    getDiaryPages(pageNumber, false).then((diaryPagesReturn) => {
+      const { pages, final_page, count, limit } = diaryPagesReturn;
+      setDiaryPages(pages);
+      setCount(count);
+      setFinalPage(final_page);
+      setLimitPerPage(limit);
+      setLoading(false);
+    });
   }, [pageNumber]);
 
   const handleNavigate = (page: number): void => {
@@ -32,6 +45,12 @@ const DiaryFeed = (): ReactElement => {
     index: number,
   ): Promise<void> => {
     await deleteDiaryPage(page_id, index);
+    setDiaryPages(
+      diaryPages.filter((value, i) => {
+        return i !== index;
+      }),
+    );
+    if (count) setCount(count - 1);
   };
 
   const handleCreate = async (): Promise<void> => {
@@ -54,6 +73,8 @@ const DiaryFeed = (): ReactElement => {
       />
     ));
   }, [diaryPages]);
+
+  if (isLoading || !diaryPages) return <>Loading...</>;
 
   return (
     <>

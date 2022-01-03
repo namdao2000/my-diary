@@ -4,7 +4,7 @@ import { useDiary } from '../services/diary/use-diary';
 
 export const NamToolBar = (): ReactElement => {
   const { setUserLoggedOut } = useAuthState();
-  const { createDiaryPage, loadDiaryPages } = useDiary();
+  const { createDiaryPage, getDiaryPages } = useDiary();
 
   const createDiary = async (): Promise<void> => {
     await createDiaryPage({
@@ -14,7 +14,7 @@ export const NamToolBar = (): ReactElement => {
   };
 
   const getDiary = async (): Promise<void> => {
-    console.log(await loadDiaryPages(1, true));
+    console.log(await getDiaryPages(1, true));
   };
 
   return (

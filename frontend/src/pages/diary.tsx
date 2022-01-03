@@ -29,6 +29,7 @@ const TOOLBAR_OPTIONS = [
 ];
 
 const Diary = (): ReactElement => {
+  const [isLoading, setLoading] = useState(true);
   const { getOneDiaryPage, updateDiaryPage } = useDiary();
   const [diaryPage, setDiaryPage] = useState<DiaryPage>();
   const [tempDiaryTitle, setTempDiaryTitle] = useState<string>('');
@@ -37,12 +38,10 @@ const Diary = (): ReactElement => {
 
   const { page_id } = useParams();
   const navigate = useNavigate();
-  const [isLoading, setLoading] = useState(true);
   const [isSaving, setSaving] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
   useEffectOnce(() => {
-    // TODO: Check if we need to check page_id here at all
     if (page_id) {
       getOneDiaryPage(page_id, false).then((diary) => {
         if (!diary) {
@@ -52,9 +51,9 @@ const Diary = (): ReactElement => {
         setTempDiaryTitle(diary.title);
         setTempDiaryContent(diary.content);
         setTempDiaryIsPublic(diary.is_public);
+        setLoading(false);
       });
     }
-    setLoading(false);
   });
 
   useEffect(() => {

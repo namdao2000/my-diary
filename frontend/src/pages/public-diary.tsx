@@ -22,9 +22,9 @@ const PublicDiary = (): ReactElement => {
           navigate(ROUTES.page404);
         }
         setDiaryPage(diary);
+        setLoading(false);
       });
     }
-    setLoading(false);
   });
 
   if (isLoading || !diaryPage) return <>Loading...</>;

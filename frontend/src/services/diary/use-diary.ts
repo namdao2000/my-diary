@@ -1,8 +1,7 @@
 import { DiaryPage } from '../../types/diary-page';
-import { useCallback, useState } from 'react';
+import { useCallback } from 'react';
 import { requestWithJWT } from '../axios/axios.wrapper';
 import { APP_URL } from '../../utils/constants';
-import { useDiaryState } from './diary-state-provider';
 
 export interface CreateDiaryPageArgs {
   title: string;
@@ -14,7 +13,7 @@ export interface UpdateDiaryPageArgs extends CreateDiaryPageArgs {
   is_public: boolean;
 }
 
-export interface SetDiaryPagesArgs {
+export interface DiaryPagesReturn {
   count: number;
   limit: number;
   final_page: number;
@@ -23,22 +22,13 @@ export interface SetDiaryPagesArgs {
 
 export interface IUseDiaryReturn {
   getOneDiaryPage: (page_id: string, isPublic: boolean) => Promise<DiaryPage>;
-  loadDiaryPages: (page: number, isPublic: boolean) => Promise<void>;
+  getDiaryPages: (page: number, isPublic: boolean) => Promise<DiaryPagesReturn>;
   createDiaryPage: (args: CreateDiaryPageArgs) => Promise<string>;
   updateDiaryPage: (args: UpdateDiaryPageArgs) => void;
   deleteDiaryPage: (page_id: string, index: number) => void;
 }
 
 export const useDiary = (): IUseDiaryReturn => {
-  const {
-    diaryPages,
-    count,
-    setDiaryPages,
-    setFinalPage,
-    setCount,
-    setLimitPerPage,
-  } = useDiaryState();
-
   const getOneDiaryPage = useCallback(
     async (page_id: string, isPublic: boolean): Promise<DiaryPage> => {
       const publicRoute = isPublic ? '/public' : '';
@@ -51,20 +41,16 @@ export const useDiary = (): IUseDiaryReturn => {
     [requestWithJWT],
   );
 
-  const loadDiaryPages = useCallback(
-    async (page: number, isPublic: boolean): Promise<void> => {
+  const getDiaryPages = useCallback(
+    async (page: number, isPublic: boolean): Promise<DiaryPagesReturn> => {
       const publicRoute = isPublic ? '/public' : '';
       const result = await requestWithJWT(
         'get',
         `${APP_URL}${publicRoute}/diary?page=${page}`,
       );
-      const { pages, final_page, count, limit } = result?.data;
-      setDiaryPages(pages);
-      setCount(count);
-      setFinalPage(final_page);
-      setLimitPerPage(limit);
+      return result?.data;
     },
-    [requestWithJWT, setDiaryPages, setCount, setFinalPage, setLimitPerPage],
+    [requestWithJWT],
   );
 
   const createDiaryPage = useCallback(
@@ -90,19 +76,13 @@ export const useDiary = (): IUseDiaryReturn => {
   const deleteDiaryPage = useCallback(
     async (page_id: string, index: number): Promise<void> => {
       await requestWithJWT('delete', `${APP_URL}/diary/${page_id}`);
-      setDiaryPages(
-        diaryPages.filter((value, i) => {
-          return i !== index;
-        }),
-      );
-      if (count) setCount(count - 1);
     },
-    [requestWithJWT, setDiaryPages, diaryPages, setCount],
+    [requestWithJWT],
   );
 
   return {
-    getOneDiaryPage: getOneDiaryPage,
-    loadDiaryPages,
+    getOneDiaryPage,
+    getDiaryPages,
     createDiaryPage,
     updateDiaryPage,
     deleteDiaryPage,
