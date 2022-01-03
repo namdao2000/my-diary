@@ -39,11 +39,10 @@ export const AuthController = {
     res: Response,
     next: NextFunction,
   ): Promise<void> => {
-    console.log('IP BABYYYYYYY:', req.headers['x-forwarded-for']);
     try {
       await AuthService.createNewUser({
         ...req.body,
-        ip: req.ip,
+        ip: (req.headers['x-forwarded-for'] as string) || '',
       });
       const token = await AuthService.generateJWT(req.body.username);
       res.status(201).json({
