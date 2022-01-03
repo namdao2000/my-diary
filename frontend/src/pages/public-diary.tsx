@@ -7,7 +7,7 @@ import ReactQuill from 'react-quill';
 import { ROUTES } from '../utils/routes';
 import '../styles/react-quill.style.css';
 import { DiaryPage } from '../types/diary-page';
-import { PlaceHolderLoading } from '../components/place-holder-loading';
+import { PlaceHolderLoading } from '../components/placeholder-loading';
 
 const PublicDiary = (): ReactElement => {
   const { page_id } = useParams();

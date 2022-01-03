@@ -1,14 +1,16 @@
 import { ReactElement, useEffect, useMemo, useState } from 'react';
-import { useEffectOnce } from 'react-use';
 import { useDiary } from '../services/diary/use-diary';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { ROUTES } from '../utils/routes';
 import { DiaryListItem } from '../components/diary-list-item';
 import { Pagination } from '../components/pagination';
 import { DiaryPage } from '../types/diary-page';
+import TimeAgo from 'react-timeago';
+import ClickAwayListener from 'react-click-away-listener';
+import { PlaceHolderLoading } from '../components/placeholder-loading';
+import { DiaryListItemPlaceHolder } from '../components/diary-list-item-placeholder';
 
 const DiaryFeed = (): ReactElement => {
-  const [isLoading, setLoading] = useState(true);
   const [diaryPages, setDiaryPages] = useState<DiaryPage[]>([]);
   const [count, setCount] = useState<number | undefined>();
   const [limitPerPage, setLimitPerPage] = useState<number | undefined>();
@@ -21,14 +23,12 @@ const DiaryFeed = (): ReactElement => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    setLoading(true);
     getDiaryPages(pageNumber, false).then((diaryPagesReturn) => {
       const { pages, final_page, count, limit } = diaryPagesReturn;
       setDiaryPages(pages);
       setCount(count);
       setFinalPage(final_page);
       setLimitPerPage(limit);
-      setLoading(false);
     });
   }, [pageNumber]);
 
@@ -62,6 +62,11 @@ const DiaryFeed = (): ReactElement => {
   };
 
   const getDiaryListItems = useMemo(() => {
+    if (diaryPages.length === 0) {
+      return [...Array(6)].map((index, i) => (
+        <DiaryListItemPlaceHolder key={i} />
+      ));
+    }
     return diaryPages.map((diary, index) => (
       <DiaryListItem
         key={diary.page_id}
@@ -73,8 +78,6 @@ const DiaryFeed = (): ReactElement => {
       />
     ));
   }, [diaryPages]);
-
-  if (isLoading || !diaryPages) return <>Loading...</>;
 
   return (
     <>

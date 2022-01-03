@@ -15,7 +15,7 @@ import TimeAgo from 'react-timeago';
 import { Modal } from '../components/modal';
 import { toast } from 'react-hot-toast';
 import { DiaryPage } from '../types/diary-page';
-import { PlaceHolderLoading } from '../components/place-holder-loading';
+import { PlaceHolderLoading } from '../components/placeholder-loading';
 
 const TOOLBAR_OPTIONS = [
   [{ header: [1, 2, 3, 4, 5, 6, false] }],

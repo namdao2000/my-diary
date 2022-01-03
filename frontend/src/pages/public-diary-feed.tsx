@@ -5,6 +5,8 @@ import { ROUTES } from '../utils/routes';
 import { DiaryListItem } from '../components/diary-list-item';
 import { Pagination } from '../components/pagination';
 import { DiaryPage } from '../types/diary-page';
+import { PlaceHolderLoading } from '../components/placeholder-loading';
+import { DiaryListItemPlaceHolder } from '../components/diary-list-item-placeholder';
 
 const PublicDiaryFeed = (): ReactElement => {
   const [isLoading, setLoading] = useState(true);
@@ -41,6 +43,11 @@ const PublicDiaryFeed = (): ReactElement => {
   };
 
   const getDiaryListItems = useMemo(() => {
+    if (diaryPages.length === 0) {
+      return [...Array(6)].map((index, i) => (
+        <DiaryListItemPlaceHolder key={i} />
+      ));
+    }
     return diaryPages.map((diary, index) => (
       <DiaryListItem
         key={diary.page_id}
@@ -51,8 +58,6 @@ const PublicDiaryFeed = (): ReactElement => {
       />
     ));
   }, [diaryPages]);
-
-  if (isLoading || !diaryPages) return <>Loading...</>;
 
   return (
     <>
