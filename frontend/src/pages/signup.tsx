@@ -90,7 +90,17 @@ const Signup = (): ReactElement => {
             </div>
             <input
               className="appearance-none border-2 rounded-lg w-full p-3 text-black focus:outline-none"
-              {...register('username', { required: 'username is required' })}
+              {...register('username', {
+                required: 'username is required',
+                minLength: {
+                  value: 3,
+                  message: 'Too short!',
+                },
+                maxLength: {
+                  value: 14,
+                  message: 'Too long!',
+                },
+              })}
               autoFocus
               type="username"
               name="username"
@@ -105,7 +115,13 @@ const Signup = (): ReactElement => {
             </div>
             <input
               className="appearance-none border-2 rounded-lg w-full p-3 text-black focus:outline-none"
-              {...register('password', { required: 'password is required' })}
+              {...register('password', {
+                required: 'password is required',
+                minLength: {
+                  value: 8,
+                  message: 'Password needs 8 characters or more',
+                },
+              })}
               type="password"
               name="password"
             />
