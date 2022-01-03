@@ -15,7 +15,7 @@ export const SQL_STATEMENTS = {
       (
           page_id    UUID PRIMARY KEY,
           username   VARCHAR(255) NOT NULL,
-          title      VARCHAR(255) NOT NULL,
+          title      VARCHAR(50) NOT NULL,
           content    TEXT,
           view_count INTEGER  DEFAULT 0 NOT NULL,
           is_public  BOOLEAN  DEFAULT FALSE NOT NULL,
