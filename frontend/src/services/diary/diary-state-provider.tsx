@@ -6,7 +6,6 @@ import {
   useState,
 } from 'react';
 import { DiaryPage } from '../../types/diary-page';
-import { SetDiaryPagesArgs } from './use-diary';
 
 interface IDiaryContext {
   diaryPages: DiaryPage[];

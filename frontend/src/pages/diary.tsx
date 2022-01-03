@@ -5,7 +5,7 @@ import {
   useEffect,
   useState,
 } from 'react';
-import { Navigate, useLocation, useParams } from 'react-router-dom';
+import { Navigate, useParams } from 'react-router-dom';
 import { useDiary } from '../services/diary/use-diary';
 import { useDebounce, useEffectOnce } from 'react-use';
 import { useDiaryState } from '../services/diary/diary-state-provider';
@@ -116,7 +116,7 @@ const Diary = (): ReactElement => {
         <>
           <div className="flex justify-center sticky diary_header_container top-0 z-10 p-2">
             <div className="diary_header">
-              <div className="flex flex-col">
+              <div className="flex flex-col w-1/2">
                 <input
                   className="text-xl cursor-pointer"
                   defaultValue={tempDiaryTitle}

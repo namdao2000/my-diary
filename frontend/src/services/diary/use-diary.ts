@@ -1,5 +1,5 @@
 import { DiaryPage } from '../../types/diary-page';
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import { requestWithJWT } from '../axios/axios.wrapper';
 import { APP_URL } from '../../utils/constants';
 import { useDiaryState } from './diary-state-provider';
