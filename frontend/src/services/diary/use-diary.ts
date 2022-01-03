@@ -22,10 +22,10 @@ export interface SetDiaryPagesArgs {
 }
 
 export interface IUseDiaryReturn {
-  loadOneDiaryPage: (page_id: string, isPublic: boolean) => Promise<void>;
+  getOneDiaryPage: (page_id: string, isPublic: boolean) => Promise<DiaryPage>;
   loadDiaryPages: (page: number, isPublic: boolean) => Promise<void>;
   createDiaryPage: (args: CreateDiaryPageArgs) => Promise<string>;
-  updateDiaryPage: (args: UpdateDiaryPageArgs, callback?: () => void) => void;
+  updateDiaryPage: (args: UpdateDiaryPageArgs) => void;
   deleteDiaryPage: (page_id: string, index: number) => void;
 }
 
@@ -34,30 +34,21 @@ export const useDiary = (): IUseDiaryReturn => {
     diaryPages,
     count,
     setDiaryPages,
-    setCurrentDiaryPage,
     setFinalPage,
     setCount,
     setLimitPerPage,
-    currentDiaryPage,
-    setTempDiaryIsPublic,
-    setTempDiaryTitle,
-    setTempDiaryContent,
   } = useDiaryState();
 
-  const loadOneDiaryPage = useCallback(
-    async (page_id: string, isPublic: boolean): Promise<void> => {
+  const getOneDiaryPage = useCallback(
+    async (page_id: string, isPublic: boolean): Promise<DiaryPage> => {
       const publicRoute = isPublic ? '/public' : '';
       const result = await requestWithJWT(
         'get',
         `${APP_URL}${publicRoute}/diary/${page_id}`,
       );
-      const { content, title, is_public } = result?.data;
-      setCurrentDiaryPage(result?.data);
-      setTempDiaryContent(content);
-      setTempDiaryTitle(title);
-      setTempDiaryIsPublic(is_public);
+      return result?.data;
     },
-    [requestWithJWT, setCurrentDiaryPage],
+    [requestWithJWT],
   );
 
   const loadDiaryPages = useCallback(
@@ -85,29 +76,15 @@ export const useDiary = (): IUseDiaryReturn => {
   );
 
   const updateDiaryPage = useCallback(
-    async (args: UpdateDiaryPageArgs, callback?: () => void): Promise<void> => {
+    async (args: UpdateDiaryPageArgs): Promise<void> => {
       const { page_id, title, content, is_public } = args;
       await requestWithJWT('put', `${APP_URL}/diary/${page_id}`, {
         title,
         content,
         is_public,
       });
-      if (currentDiaryPage) {
-        const newDiaryPage: DiaryPage = {
-          ...currentDiaryPage,
-          page_id,
-          title,
-          content,
-          is_public,
-          updated_at: new Date(),
-        };
-        setCurrentDiaryPage(newDiaryPage);
-      }
-      if (callback) {
-        callback();
-      }
     },
-    [requestWithJWT, setCurrentDiaryPage, currentDiaryPage],
+    [requestWithJWT],
   );
 
   const deleteDiaryPage = useCallback(
@@ -124,7 +101,7 @@ export const useDiary = (): IUseDiaryReturn => {
   );
 
   return {
-    loadOneDiaryPage,
+    getOneDiaryPage: getOneDiaryPage,
     loadDiaryPages,
     createDiaryPage,
     updateDiaryPage,
