@@ -39,6 +39,7 @@ export const AuthController = {
     res: Response,
     next: NextFunction,
   ): Promise<void> => {
+    console.log('IP BABYYYYYYY:', req.headers['x-forwarded-for']);
     try {
       await AuthService.createNewUser({
         ...req.body,
