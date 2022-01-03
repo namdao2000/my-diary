@@ -1,6 +1,3 @@
-// TODO: Verify the token, Then extract the user info from the token and save it into the
-//  req.locals object. Later, we use this to see if the user has permission or not.
-
 import { NextFunction, Request, Response } from 'express';
 import { ErrorCode, getHttpErrorResponse } from '../services/http-error-response.service';
 import { AuthService } from '../services/auth.service';

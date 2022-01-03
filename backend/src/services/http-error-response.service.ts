@@ -1,3 +1,5 @@
+import { ValidationError } from 'express-validator/src/base';
+
 export enum ErrorCode {
   MISSING_AUTH_TOKEN = 'MISSING_AUTH_TOKEN',
   INVALID_TOKEN = 'INVALID_TOKEN',
@@ -6,17 +8,20 @@ export enum ErrorCode {
   UNAUTHORIZED_ACTION = 'UNAUTHORIZED_ACTION',
   DIARY_PAGE_NON_EXISTENT = 'DIARY_PAGE_NON_EXISTENT',
   UNKNOWN_ERROR = 'UNKNOWN_ERROR',
+  BAD_REQUEST = 'BAD_REQUEST',
 }
 
 export interface IHttpErrorResponse {
   status: number;
   message: string;
+  errors?: ValidationError[];
   error_code: ErrorCode;
 }
 
 export class HttpError extends Error {
   private status: number;
   private error_code: ErrorCode;
+
   constructor(args: IHttpErrorResponse) {
     super(args.message);
     this.status = args.status;

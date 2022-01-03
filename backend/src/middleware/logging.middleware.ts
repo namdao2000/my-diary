@@ -6,6 +6,7 @@ export const logging = (req: Request, res: Response, next: NextFunction): void =
     message: 'Http Request',
     request_type: req.method,
     request_url: req.url,
+    request_ip: req.headers['x-forwarded-for'],
   });
   next();
 };
