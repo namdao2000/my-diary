@@ -15,8 +15,8 @@ DiaryRouter.post(
   body('title')
     .exists()
     .withMessage('required')
-    .isLength({ max: 35 })
-    .withMessage('Must be less than 35 characters long.'),
+    .isLength({ max: 50 })
+    .withMessage('Must be less than 50 characters long.'),
   body('content').exists().withMessage('required'),
   validateResult,
   DiaryController.create,
@@ -27,8 +27,8 @@ DiaryRouter.put(
   body('title')
     .exists()
     .withMessage('required')
-    .isLength({ max: 35 })
-    .withMessage('Must be less than 35 characters long.'),
+    .isLength({ max: 50 })
+    .withMessage('Must be less than 50 characters long.'),
   body('content').exists().withMessage('required'),
   body('is_public').exists().withMessage('required'),
   validateResult,
