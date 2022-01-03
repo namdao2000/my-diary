@@ -45,7 +45,7 @@ const Diary = (): ReactElement => {
     if (page_id) {
       getOneDiaryPage(page_id, false).then((diary) => {
         if (!diary) {
-          navigate(ROUTES.page404);
+          navigate(ROUTES.page404, { replace: true });
         }
         setDiaryPage(diary);
         setTempDiaryTitle(diary.title);

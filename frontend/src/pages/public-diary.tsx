@@ -19,7 +19,7 @@ const PublicDiary = (): ReactElement => {
     if (page_id) {
       getOneDiaryPage(page_id, true).then((diary) => {
         if (!diary) {
-          navigate(ROUTES.page404);
+          navigate(ROUTES.page404, { replace: true });
         }
         setDiaryPage(diary);
       });

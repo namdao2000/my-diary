@@ -24,7 +24,7 @@ const PublicDiaryFeed = (): ReactElement => {
 
   useEffect(() => {
     setLoading(true);
-    getDiaryPages(pageNumber, false).then((diaryPagesReturn) => {
+    getDiaryPages(pageNumber, true).then((diaryPagesReturn) => {
       const { pages, final_page, count, limit } = diaryPagesReturn;
       setDiaryPages(pages);
       setCount(count);
