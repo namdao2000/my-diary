@@ -10,6 +10,7 @@ import Login from './login';
 import ForgotPassword from './forgot-password';
 import { Page404 } from './404';
 import { PageLayout } from '../components/page-layout';
+import { PlaceHolderLoading } from '../components/placeholder-loading';
 
 const Home = lazy(() => import('./home'));
 const DiaryFeed = lazy(() => import('./diary-feed'));
@@ -31,7 +32,9 @@ export const Pages = (): ReactElement => {
             <Route
               path={ROUTES.home}
               element={
-                <React.Suspense fallback={<>...</>}>
+                <React.Suspense
+                  fallback={<PlaceHolderLoading className="h-2 w-72" />}
+                >
                   <Home />
                 </React.Suspense>
               }
@@ -44,7 +47,9 @@ export const Pages = (): ReactElement => {
               path={ROUTES.diaryFeed}
               element={
                 <AuthGuard>
-                  <React.Suspense fallback={<>...</>}>
+                  <React.Suspense
+                    fallback={<PlaceHolderLoading className="h-2 w-72" />}
+                  >
                     <DiaryFeed />
                   </React.Suspense>
                 </AuthGuard>
@@ -53,7 +58,9 @@ export const Pages = (): ReactElement => {
             <Route
               path={ROUTES.publicDiaryFeed}
               element={
-                <React.Suspense fallback={<>...</>}>
+                <React.Suspense
+                  fallback={<PlaceHolderLoading className="h-2 w-72" />}
+                >
                   <PublicDiaryFeed />
                 </React.Suspense>
               }
@@ -62,7 +69,9 @@ export const Pages = (): ReactElement => {
               path={ROUTES.diaryPage}
               element={
                 <AuthGuard>
-                  <React.Suspense fallback={<>...</>}>
+                  <React.Suspense
+                    fallback={<PlaceHolderLoading className="h-2 w-72" />}
+                  >
                     <Diary />
                   </React.Suspense>
                 </AuthGuard>
@@ -71,7 +80,9 @@ export const Pages = (): ReactElement => {
             <Route
               path={ROUTES.publicDiaryPage}
               element={
-                <React.Suspense fallback={<>...</>}>
+                <React.Suspense
+                  fallback={<PlaceHolderLoading className="h-2 w-72" />}
+                >
                   <PublicDiary />
                 </React.Suspense>
               }
