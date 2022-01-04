@@ -26,6 +26,7 @@ const TOOLBAR_OPTIONS = [
   [{ script: 'sub' }, { script: 'super' }],
   [{ align: [] }],
   ['blockquote', 'code-block'],
+  ['link'],
   ['clean'],
 ];
 
