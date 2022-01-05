@@ -222,6 +222,7 @@ const Diary = (): ReactElement => {
         value={tempDiaryContent}
         onChange={setTempDiaryContent}
         modules={{ toolbar: TOOLBAR_OPTIONS }}
+        scrollingContainer="html"
       />
     </div>
   );
