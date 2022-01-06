@@ -31,6 +31,7 @@ const TOOLBAR_OPTIONS = [
 ];
 
 const Diary = (): ReactElement => {
+  const [isLoading, setLoading] = useState(true);
   const { getOneDiaryPage, updateDiaryPage } = useDiary();
   const [diaryPage, setDiaryPage] = useState<DiaryPage>();
   const [tempDiaryTitle, setTempDiaryTitle] = useState<string>('');
@@ -52,11 +53,13 @@ const Diary = (): ReactElement => {
         setTempDiaryTitle(diary.title);
         setTempDiaryContent(diary.content);
         setTempDiaryIsPublic(diary.is_public);
+        setLoading(false);
       });
     }
   });
 
   useEffect(() => {
+    if (isLoading) return;
     if (
       diaryPage?.content !== tempDiaryContent ||
       diaryPage?.title !== tempDiaryTitle ||
