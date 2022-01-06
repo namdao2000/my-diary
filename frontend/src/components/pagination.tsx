@@ -1,4 +1,4 @@
-import { ReactElement, useEffect, useMemo } from 'react';
+import { ReactElement, useMemo } from 'react';
 
 const PaginationButton = ({
   index,

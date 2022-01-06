@@ -16,7 +16,7 @@ export const DiaryListItem = ({
   onSelect: (page_id: string) => void;
   onDelete?: (page_id: string, index: number) => void;
 }): ReactElement => {
-  const { page_id, title, updated_at, is_public } = diaryPage;
+  const { page_id, title, created_at, is_public } = diaryPage;
   const [confirmDeleteState, setConfirmDeleteState] = useState(false);
 
   const onConfirmDelete = (): void => {
@@ -45,7 +45,7 @@ export const DiaryListItem = ({
         </div>
       </div>
       <p className="basis-3/12 items-center flex justify-end text-sm text-gray-600">
-        <TimeAgo date={new Date(updated_at)} />
+        <TimeAgo date={new Date(created_at)} />
       </p>
       {!publicMode && (
         <div className="basis-1/12 select-none text-slate-400 flex justify-end pr-5">

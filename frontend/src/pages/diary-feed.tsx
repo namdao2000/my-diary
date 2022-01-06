@@ -5,9 +5,6 @@ import { ROUTES } from '../utils/routes';
 import { DiaryListItem } from '../components/diary-list-item';
 import { Pagination } from '../components/pagination';
 import { DiaryPage } from '../types/diary-page';
-import TimeAgo from 'react-timeago';
-import ClickAwayListener from 'react-click-away-listener';
-import { PlaceHolderLoading } from '../components/placeholder-loading';
 import { DiaryListItemPlaceHolder } from '../components/diary-list-item-placeholder';
 
 const DiaryFeed = (): ReactElement => {
