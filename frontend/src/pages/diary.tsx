@@ -197,7 +197,7 @@ const Diary = (): ReactElement => {
                         <div className="flex justify-between mb-4 p-1 border-2 border-black rounded-lg bg-slate-100">
                           <input
                             className="w-full truncate border-0 outline-none bg-transparent"
-                            value={publicDiaryLink}
+                            defaultValue={publicDiaryLink}
                           />
                           <button
                             className="font-bold text-sm py-1 px-2 bg-inherit"
