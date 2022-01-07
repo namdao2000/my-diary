@@ -43,6 +43,9 @@ const Diary = (): ReactElement => {
   const [isSaving, setSaving] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
+  const publicDiaryLink = diaryPage?.is_public
+    ? `${window.location.origin}/public/diary/${page_id}`
+    : '';
   useEffectOnce(() => {
     if (page_id) {
       getOneDiaryPage(page_id, false).then((diary) => {
@@ -105,14 +108,6 @@ const Diary = (): ReactElement => {
     setSaving(false);
   };
 
-  const handleShare = async (): Promise<void> => {
-    await navigator.clipboard.writeText(
-      `${window.location.origin}/public/diary/${page_id}`,
-    );
-    toast.success('Copied to Clipboard 📋');
-    setShowModal(true);
-  };
-
   useDebounce(
     () => {
       handleUpdateDiary();
@@ -170,7 +165,9 @@ const Diary = (): ReactElement => {
                 {diaryPage.is_public && (
                   <>
                     <button
-                      onClick={handleShare}
+                      onClick={(): void => {
+                        setShowModal(true);
+                      }}
                       className="bg-teal-500 hover:bg-teal-700 text-white font-bold text-xs py-1.5 px-2 rounded ml-2"
                     >
                       Share
@@ -197,6 +194,25 @@ const Diary = (): ReactElement => {
                           </p>
                         </div>
 
+                        <div className="flex justify-between mb-4 p-1 border-2 border-black rounded-lg bg-slate-100">
+                          <input
+                            className="w-full truncate border-0 outline-none bg-transparent"
+                            value={publicDiaryLink}
+                          />
+                          <button
+                            className="font-bold text-sm py-1 px-2 bg-inherit"
+                            onClick={async (): Promise<void> => {
+                              toast.success('Copied to Clipboard 📋', {
+                                duration: 4000,
+                              });
+                              await navigator.clipboard.writeText(
+                                publicDiaryLink,
+                              );
+                            }}
+                          >
+                            copy
+                          </button>
+                        </div>
                         <p className="mb-4">
                           This page is now accessible to anyone with that link.
                           So what are you waiting for? The world needs to see
@@ -206,6 +222,7 @@ const Diary = (): ReactElement => {
                           className="bg-teal-500 hover:bg-teal-700 text-white font-bold text-sm py-1 px-2 rounded"
                           onClick={(): void => {
                             toast.success('Yes, I know 😎');
+                            setShowModal(false);
                           }}
                         >
                           That&apos;s Epic

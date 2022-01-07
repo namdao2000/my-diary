@@ -1,4 +1,4 @@
-import { ReactElement, ReactNode } from 'react';
+import React, { ReactElement, ReactNode } from 'react';
 import clsx from 'clsx';
 
 export type ModalPosition = 'top' | 'center';
@@ -37,8 +37,10 @@ export const Modal = ({
   width = 'md:w-1/2 md:mx-auto',
 }: ModalProps): ReactElement => {
   // Whack code
-  const handleClose = (): void => {
-    onClose();
+  const handleClose = (e: React.MouseEvent): void => {
+    if (e.currentTarget === e.target) {
+      onClose();
+    }
   };
 
   const containerClass = getContainerClassName(position);
