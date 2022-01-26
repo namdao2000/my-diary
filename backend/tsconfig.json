@@ -2,8 +2,6 @@
   "extends": "@tsconfig/node14/tsconfig.json",
   "compilerOptions": {
     "preserveConstEnums": true,
-    "target": "ES6",
-    "module": "commonjs",
     "outDir": "dist",
     "baseUrl": "./",
   },
