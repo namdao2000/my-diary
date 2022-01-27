@@ -48,7 +48,7 @@ export const getHttpErrorResponse = (errorCode: ErrorCode): IHttpErrorResponse =
     }
     case ErrorCode.MISSING_AUTH_TOKEN: {
       response.status = 401;
-      response.message = "Your header is missing 'Bearer (Token)'";
+      response.message = 'Your header is missing Bearer Token';
       break;
     }
     case ErrorCode.USERNAME_TAKEN: {
