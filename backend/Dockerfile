@@ -1,4 +1,4 @@
-FROM node:14-alpine
+FROM mhart/alpine-node as build
 
 WORKDIR /app
 
@@ -10,4 +10,13 @@ COPY ./ ./
 
 RUN npm run build
 
-CMD [ "npm", "start" ]
+FROM mhart/alpine-node as running
+
+WORKDIR /app
+
+COPY --from=build /app/dist dist
+COPY --from=build /app/package*.json ./
+
+RUN npm ci --production
+
+CMD ["node", "dist/src/index.js"]
