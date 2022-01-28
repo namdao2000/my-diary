@@ -1,6 +1,2 @@
 database.db
 node_modules
-Dockerfile
-.git
-.gitignore
-jest.config.*
